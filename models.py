@@ -33,9 +33,9 @@ class Employee(db.Model):
     nationality = db.Column(db.String, nullable=False)
     emergency_contact = db.Column(db.String, nullable=False)
 
-    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
-    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
-    leave_id =  db.Column(db.Integer, db.ForeignKey('leaves.id'))
+    employee_leave = db.Relationship('OnLeave_employee', backref='employee', uselist = False)
+    employee_department = db.relationship('Department_employee', backref='employee', uselist = False)
+    employee_project = db.relationship('Project_employee', backref='employee')
 
     dependants = db.relationship('Dependant', backref='employee')
     references = db.relationship('Reference', backref='employee')
@@ -81,8 +81,23 @@ class Department(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     department_name = db.Column(db.String, nullable=False)
-    department_employees = db.relationship('Employee', backref='department')
+    department_employees = db.relationship('Department_employee', backref='department')
 
+class Department_employee(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    
+    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+
+
+class Project_employee(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+
+class OnLeave_employee(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    
+    leave_id = db.Column(db.Integer, db.ForeignKey('leaves.id'))
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
 # class Manager(db.Model):
 #     __tablename__ = 'managers'
@@ -97,7 +112,7 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Integer, nullable=False)
     project_status = db.Column(db.String, nullable=False)
-    employees_assigned = db.relationship('Employee', backref='project')
+    project_employees = db.relationship('Project_employee', backref='project')
 
 
 class Leave(db.Model):
@@ -108,7 +123,7 @@ class Leave(db.Model):
     leave_to =db.Column(db.DateTime, nullable=False)
     leave_type =db.Column(db.String, nullable=False)
     leave_letter =db.Column(db.String, nullable=False)
-    employees_on_leave = db.Relationship('Employee', backref='leave')
+    employees_on_leave = db.Relationship('OnLeave_employee', backref='leave')
 
 
 class JobApplicant(db.Model):

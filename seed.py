@@ -1,5 +1,5 @@
 from app import app
-from models import db, Admin, Employee, Project, Dependant, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave
+from models import db, Admin, Employee, Project, Dependant, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave, Project_employee, Department_employee, OnLeave_employee
 from datetime import datetime, timedelta
 
 with app.app_context():
@@ -93,6 +93,29 @@ with app.app_context():
         # ... add 3 more documents
     ]
     db.session.bulk_save_objects(documents)
+
+
+    project_employees = [
+        Project_employee(project_id=1, employee_id=1),
+        Project_employee(project_id=2, employee_id=2),
+        # ... add 3 more documents
+    ]
+    db.session.bulk_save_objects(project_employees)
+
+    department_employees = [
+        Department_employee(department_id=1, employee_id=1),
+        Department_employee(department_id=2, employee_id=2),
+        # ... add 3 more documents
+    ]
+    db.session.bulk_save_objects(department_employees)
+
+
+    employees_on_leave = [
+        OnLeave_employee(leave_id=1, employee_id=1),
+        OnLeave_employee(leave_id=2, employee_id=2),
+        # ... add 3 more documents
+    ]
+    db.session.bulk_save_objects(employees_on_leave)
 
     db.session.commit()
 
