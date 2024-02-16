@@ -1,46 +1,229 @@
-from models import Employee, Project, Dependant, Document, Reference, JobApplicant, Interview, Department, BankDetail, Manager, Leave
+from models import Admin, Employee, Project, Dependant, Document, Reference, JobApplicant, Interview, Department, BankDetail, Manager, Leave
 from app import ma
 
-class Employeeschema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model= Employee
 
-class Projectschema(ma.SQLAlchemyAutoSchema):
+class AdminSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model= Admin
+        load_instance = True
+        fields = ('id', 'first_name', 'last_name', 'email')
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "admin_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("admins"),
+        }
+    )
+
+admin_schema = AdminSchema()
+admins_schema = AdminSchema(many=True)
+
+
+
+
+class ProjectSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Project
+        load_instance = True
 
-class Dependantschema(ma.SQLAlchemyAutoSchema):
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "project_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("projects"),
+        }
+    )
+
+project_schema = ProjectSchema()
+projects_schema = ProjectSchema(many=True)
+
+class DependantSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Dependant
+        load_instance = True
 
-class Documentschema(ma.SQLAlchemyAutoSchema):
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "dependant_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("dependants"),
+        }
+    )
+
+dependant_schema = DependantSchema()
+dependants_schema = DependantSchema(many=True)
+
+class DocumentSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Document
+        load_instance = True
 
-class Referenceschema(ma.SQLAlchemyAutoSchema):
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "document_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("documents"),
+        }
+    )
+
+document_schema = DocumentSchema()
+documents_schema = DocumentSchema(many=True)
+
+class ReferenceSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Reference
+        load_instance = True
 
-class JobApplicantschema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model= JobApplicant
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "reference_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("references"),
+        }
+    )
 
-class Interviewschema(ma.SQLAlchemyAutoSchema):
+reference_schema = ReferenceSchema()
+references_schema = ReferenceSchema(many=True)
+
+class InterviewSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Interview
+        load_instance = True
 
-class Departmentschema(ma.SQLAlchemyAutoSchema):
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "interview_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("interviews"),
+        }
+    )
+
+interview_schema = InterviewSchema()
+interviews_schema = InterviewSchema(many=True)
+
+class JobApplicantSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model= Department
+        model= JobApplicant
+        load_instance = True
 
-class BankDetailschema(ma.SQLAlchemyAutoSchema):
+    interview = ma.Nested(InterviewSchema)
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "job_applicant_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("job_applicants"),
+        }
+    )
+
+job_applicant_schema = JobApplicantSchema()
+job_applicants_schema = JobApplicantSchema(many=True)
+
+
+class BankDetailSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= BankDetail
+        load_instance = True
 
-class Managerschema(ma.SQLAlchemyAutoSchema):
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "bankdetail_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("bankdetails"),
+        }
+    )
+
+bankdetail_schema = BankDetailSchema()
+bankdetails_schema = BankDetailSchema(many=True)
+
+class ManagerSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Manager
+        load_instance = True
 
-class Leaveschema(ma.SQLAlchemyAutoSchema):
+    projects_assigned = ma.Nested(ProjectSchema, many = True)
+
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "manager_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("managers"),
+        }
+    )
+
+manager_schema = ManagerSchema()
+managers_schema = ManagerSchema(many=True)
+
+
+class EmployeeSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model= Employee
+        load_instance = True
+
+    dependants = ma.Nested(DependantSchema, many = True)
+    references = ma.Nested(ReferenceSchema, many = True)
+    documents = ma.Nested(DocumentSchema, many = True)
+    bankdetails = ma.Nested(BankDetailSchema)
+
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "employee_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("employees"),
+        }
+    )
+
+employee_schema = EmployeeSchema()
+employees_schema = EmployeeSchema(many=True)
+
+class DepartmentSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model= Department
+        load_instance = True
+
+    employees = ma.Nested(EmployeeSchema, many = True)
+
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "department_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("departments"),
+        }
+    )
+
+department_schema = DepartmentSchema()
+departments_schema = DepartmentSchema(many=True)
+
+class LeaveSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Leave
+        load_instance = True
+
+    employees_on_leave = ma.Nested(EmployeeSchema, many = True)
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "leave_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("leaves"),
+        }
+    )
+
+leave_schema = LeaveSchema()
+leaves_schema = LeaveSchema(many=True)
