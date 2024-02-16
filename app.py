@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_marshmallow import Marshmallow
 from models import db
 from flask_migrate import Migrate
 
@@ -11,7 +12,7 @@ migrate =  Migrate(app, db)
 
 
 db.init_app(app)
-
+ma= Marshmallow(app)
 
 
 
