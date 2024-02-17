@@ -8,7 +8,7 @@ from schemas import DepartmentSchema, department_schema, departments_schema
 class Department_list(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('department_name', required=True, help="department_name is required")
-    parser.add_argument('department_employees', required=True, help="department_employees is required")
+    # parser.add_argument('department_employees', required=True, help="department_employees is required")
 
     def get(self):
         departments = Department.query.all()
