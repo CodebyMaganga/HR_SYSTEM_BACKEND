@@ -89,10 +89,31 @@ class Department_employee(db.Model):
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
 
+class Project(db.Model):
+    __tablename__ = 'projects'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Integer, nullable=False)
+    project_status = db.Column(db.String, nullable=False)
+    project_employees = db.relationship('Project_employee', backref='project')
+
+
 class Project_employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)    
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+
+
+class Leave(db.Model):
+    __tablename__ = 'leaves'
+
+    id = db.Column(db.Integer, primary_key=True)
+    leave_from =db.Column(db.DateTime, nullable=False)
+    leave_to =db.Column(db.DateTime, nullable=False)
+    leave_type =db.Column(db.String, nullable=False)
+    leave_letter =db.Column(db.String, nullable=False)
+    employees_on_leave = db.Relationship('OnLeave_employee', backref='leave')
+
 
 class OnLeave_employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)    
@@ -105,25 +126,6 @@ class OnLeave_employee(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 #     projects_assigned = db.Relationship('Project', backref='manager')
-
-class Project(db.Model):
-    __tablename__ = 'projects'
-
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Integer, nullable=False)
-    project_status = db.Column(db.String, nullable=False)
-    project_employees = db.relationship('Project_employee', backref='project')
-
-
-class Leave(db.Model):
-    __tablename__ = 'leaves'
-
-    id = db.Column(db.Integer, primary_key=True)
-    leave_from =db.Column(db.DateTime, nullable=False)
-    leave_to =db.Column(db.DateTime, nullable=False)
-    leave_type =db.Column(db.String, nullable=False)
-    leave_letter =db.Column(db.String, nullable=False)
-    employees_on_leave = db.Relationship('OnLeave_employee', backref='leave')
 
 
 class JobApplicant(db.Model):
