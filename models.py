@@ -33,9 +33,9 @@ class Employee(db.Model):
     nationality = db.Column(db.String, nullable=False)
     emergency_contact = db.Column(db.String, nullable=False)
 
-    employee_leave = db.Relationship('OnLeave_employee', backref='employee', uselist = False)
-    employee_department = db.relationship('Department_employee', backref='employee', uselist = False)
-    employee_project = db.relationship('Project_employee', backref='employee')
+    employee_leave = db.Column(db.Integer, db.ForeignKey('leaves.id'))
+    employee_department = db.Column(db.Integer, db.ForeignKey('departments.id'))
+    employee_project = db.Column(db.Integer, db.ForeignKey('projects.id'))
 
     dependants = db.relationship('Dependant', backref='employee')
     references = db.relationship('Reference', backref='employee')

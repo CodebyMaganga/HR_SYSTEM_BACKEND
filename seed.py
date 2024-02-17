@@ -82,8 +82,6 @@ with app.app_context():
     projects = [
         Project(title="Project 1", project_status="Active"),
         Project(title="Project 2", project_status="Completed"),
-        Project(title="Project 1", project_status="Active"),
-        Project(title="Project 2", project_status="Completed"),
         Project(title="Project 3", project_status="In Progress"),
         Project(title="Project 4", project_status="Active"),
         Project(title="Project 5", project_status="Planning"),
@@ -169,21 +167,21 @@ with app.app_context():
         Department_employee(department_id=3, employee_id=3),
         Department_employee(department_id=4, employee_id=4),
         Department_employee(department_id=5, employee_id=5),
-        Department_employee(department_id=6, employee_id=6),
-        Department_employee(department_id=7, employee_id=7),
-        Department_employee(department_id=8, employee_id=8),
-        Department_employee(department_id=9, employee_id=9),
-        Department_employee(department_id=10, employee_id=10)
+        Department_employee(department_id=5, employee_id=6),
+        Department_employee(department_id=4, employee_id=7),
+        Department_employee(department_id=3, employee_id=8),
+        Department_employee(department_id=1, employee_id=9),
+        Department_employee(department_id=1, employee_id=10)
     ]
     db.session.bulk_save_objects(department_employees)
 
 
     employees_on_leave = [
         OnLeave_employee(leave_id=1, employee_id=1),
-        OnLeave_employee(leave_id=3, employee_id=3),
-        OnLeave_employee(leave_id=4, employee_id=4),
-        OnLeave_employee(leave_id=8, employee_id=8),
-        OnLeave_employee(leave_id=9, employee_id=9),
+        OnLeave_employee(leave_id=2, employee_id=3),
+        OnLeave_employee(leave_id=3, employee_id=4),
+        OnLeave_employee(leave_id=4, employee_id=8),
+        OnLeave_employee(leave_id=5, employee_id=9),
     ]
     db.session.bulk_save_objects(employees_on_leave)
 
