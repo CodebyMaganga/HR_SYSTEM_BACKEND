@@ -15,7 +15,7 @@ class Project_list(Resource):
         projects = Project.query.all()
 
         response = make_response(
-            project_schema.dump(projects),
+            projects_schema.dump(projects),
             200,
         )
 

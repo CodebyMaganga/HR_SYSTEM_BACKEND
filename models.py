@@ -93,7 +93,7 @@ class Project(db.Model):
     __tablename__ = 'projects'
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Integer, nullable=False)
+    title = db.Column(db.String, nullable=False)
     project_status = db.Column(db.String, nullable=False)
     project_employees = db.relationship('Project_employee', backref='project')
 
