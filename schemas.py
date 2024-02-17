@@ -32,7 +32,7 @@ class DependantSchema(ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "dependant_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("dependants"),
+            "collection": ma.URLFor("dependant_list"),
         }
     )
 
@@ -49,7 +49,7 @@ class DocumentSchema(ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "document_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("documents"),
+            "collection": ma.URLFor("document_list"),
         }
     )
 
@@ -66,7 +66,7 @@ class ReferenceSchema(ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "reference_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("references"),
+            "collection": ma.URLFor("reference_list"),
         }
     )
 
@@ -83,7 +83,7 @@ class InterviewSchema(ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "interview_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("interviews"),
+            "collection": ma.URLFor("interview_list"),
         }
     )
 
@@ -100,9 +100,9 @@ class JobApplicantSchema(ma.SQLAlchemyAutoSchema):
     url = ma.Hyperlinks(
         {
             "self": ma.URLFor(
-                "job_applicant_by_id",
+                "jobapplicant_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("job_applicants"),
+            "collection": ma.URLFor("jobapplicant_list"),
         }
     )
 
@@ -120,7 +120,7 @@ class BankDetailSchema(ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "bankdetail_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("bankdetails"),
+            "collection": ma.URLFor("bankdetail_list"),
         }
     )
 
@@ -162,7 +162,7 @@ class Department_employeeSchema (ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "department_employee_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("department_employees"),
+            "collection": ma.URLFor("department_employee_list"),
         }
     )
 
@@ -182,7 +182,7 @@ class DepartmentSchema(ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "department_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("departments"),
+            "collection": ma.URLFor("department_list"),
         }
     )
 
@@ -200,7 +200,7 @@ class Project_employeeSchema (ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "project_employee_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("project_employees"),
+            "collection": ma.URLFor("projectemployee_list"),
         }
     )
 
@@ -220,7 +220,7 @@ class ProjectSchema(ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "project_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("projects"),
+            "collection": ma.URLFor("project_list"),
         }
     )
 
@@ -236,9 +236,9 @@ class OnLeave_employeeSchema (ma.SQLAlchemyAutoSchema):
     url = ma.Hyperlinks(
         {
             "self": ma.URLFor(
-                "employee_on_leave_by_id",
+                "onleaveemployee_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("employees_on_leave"),
+            "collection": ma.URLFor("onleaveemployee_list"),
         }
     )
 
@@ -258,7 +258,7 @@ class LeaveSchema(ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "leave_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("leaves"),
+            "collection": ma.URLFor("leave_list"),
         }
     )
 
