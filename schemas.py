@@ -1,5 +1,7 @@
 from models import Admin, Employee, Project, Dependant, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave, Department_employee, Project_employee, OnLeave_employee
-from app import ma
+from flask_marshmallow import Marshmallow
+
+ma= Marshmallow()
 
 
 class AdminSchema(ma.SQLAlchemyAutoSchema):
@@ -125,26 +127,6 @@ class BankDetailSchema(ma.SQLAlchemyAutoSchema):
 bankdetail_schema = BankDetailSchema()
 bankdetails_schema = BankDetailSchema(many=True)
 
-# class ManagerSchema(ma.SQLAlchemyAutoSchema):
-#     class Meta:
-#         model= Manager
-#         load_instance = True
-
-#     projects_assigned = ma.Nested(ProjectSchema, many = True)
-
-
-#     url = ma.Hyperlinks(
-#         {
-#             "self": ma.URLFor(
-#                 "manager_by_id",
-#                 values=dict(id="<id>")),
-#             "collection": ma.URLFor("managers"),
-#         }
-#     )
-
-# manager_schema = ManagerSchema()
-# managers_schema = ManagerSchema(many=True)
-
 
 class EmployeeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -162,7 +144,7 @@ class EmployeeSchema(ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "employee_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("employees"),
+            "collection": ma.URLFor("employee_list"),
         }
     )
 
