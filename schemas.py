@@ -136,7 +136,7 @@ class EmployeeSchema(ma.SQLAlchemyAutoSchema):
     dependants = ma.Nested(DependantSchema, many = True)
     references = ma.Nested(ReferenceSchema, many = True)
     documents = ma.Nested(DocumentSchema, many = True)
-    bankdetails = ma.Nested(BankDetailSchema)
+    bankdetails = ma.Nested(BankDetailSchema, many = True)
 
 
     url = ma.Hyperlinks(
