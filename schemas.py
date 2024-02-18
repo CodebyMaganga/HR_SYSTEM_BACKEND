@@ -15,7 +15,7 @@ class AdminSchema(ma.SQLAlchemyAutoSchema):
             "self": ma.URLFor(
                 "admin_by_id",
                 values=dict(id="<id>")),
-            "collection": ma.URLFor("admins"),
+            "collection": ma.URLFor("admin_list"),
         }
     )
 
