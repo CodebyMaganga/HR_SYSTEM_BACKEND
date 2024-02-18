@@ -131,6 +131,7 @@ bankdetails_schema = BankDetailSchema(many=True)
 class EmployeeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Employee
+        include_fk = True
         load_instance = True
 
     dependants = ma.Nested(DependantSchema, many = True)
@@ -155,6 +156,7 @@ employees_schema = EmployeeSchema(many=True)
 class Department_employeeSchema (ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Department_employee
+        include_fk = True
         load_instance = True
 
     url = ma.Hyperlinks(
@@ -193,6 +195,7 @@ departments_schema = DepartmentSchema(many=True)
 class Project_employeeSchema (ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Project_employee
+        include_fk = True
         load_instance = True
 
     url = ma.Hyperlinks(
@@ -231,6 +234,7 @@ projects_schema = ProjectSchema(many=True)
 class OnLeave_employeeSchema (ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Project_employee
+        include_fk = True
         load_instance = True
 
     url = ma.Hyperlinks(
