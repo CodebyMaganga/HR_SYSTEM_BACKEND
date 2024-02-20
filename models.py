@@ -37,9 +37,9 @@ class Employee(db.Model):
     nationality = db.Column(db.String, nullable=False)
     emergency_contact = db.Column(db.String, nullable=False)
 
-    employee_leave = db.Column(db.Integer, db.ForeignKey('leaves.id'))
-    employee_department = db.Column(db.Integer, db.ForeignKey('departments.id'))
-    employee_project = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    employee_leave = db.relationship('OnLeave_employee', backref='employee', uselist=False)
+    employee_department = db.relationship('Department_employee', backref='employee', uselist=False)
+    employee_project = db.relationship('Project_employee', backref='employee', uselist=False)
 
     dependants = db.relationship('Dependant', backref='employee')
     references = db.relationship('Reference', backref='employee')
@@ -88,6 +88,8 @@ class Department(db.Model):
     department_employees = db.relationship('Department_employee', backref='department')
 
 class Department_employee(db.Model):
+    __tablename__ = 'department_employees'
+
     id = db.Column(db.Integer, primary_key=True)    
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
@@ -103,6 +105,8 @@ class Project(db.Model):
 
 
 class Project_employee(db.Model):
+    __tablename__ = 'project_employees'
+
     id = db.Column(db.Integer, primary_key=True)    
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
@@ -116,20 +120,16 @@ class Leave(db.Model):
     leave_to =db.Column(db.DateTime, nullable=False)
     leave_type =db.Column(db.String, nullable=False)
     leave_letter =db.Column(db.String, nullable=False)
-    employees_on_leave = db.Relationship('OnLeave_employee', backref='leave')
+    employees_on_leave = db.relationship('OnLeave_employee', backref='leave')
 
 
 class OnLeave_employee(db.Model):
+    __tablename__ = 'on_leave_employees'
+
     id = db.Column(db.Integer, primary_key=True)    
     leave_id = db.Column(db.Integer, db.ForeignKey('leaves.id'))
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
-# class Manager(db.Model):
-#     __tablename__ = 'managers'
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
-#     projects_assigned = db.Relationship('Project', backref='manager')
 
 
 class JobApplicant(db.Model):
@@ -143,7 +143,7 @@ class JobApplicant(db.Model):
     experience = db.Column(db.String, nullable=False)
     role_applied = db.Column(db.String, nullable=False)
     status = db.Column(db.String, nullable=False)
-    interview = db.Relationship('Interview', backref='jobapplicant', uselist=False)
+    interview = db.relationship('Interview', backref='jobapplicant', uselist=False)
 
 class Interview(db.Model):
     __tablename__ = 'interviews'

@@ -1,8 +1,8 @@
-"""recreated tables and added departments foreign key relationship to employees table
+"""Recreated models and tables and edited relationships
 
-Revision ID: a9ea3d9fa1eb
+Revision ID: 8874fca464d6
 Revises: 
-Create Date: 2024-02-18 01:16:20.998105
+Create Date: 2024-02-21 01:51:01.248922
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a9ea3d9fa1eb'
+revision = '8874fca464d6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -32,6 +32,27 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('department_name', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('employees',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('first_name', sa.String(), nullable=False),
+    sa.Column('last_name', sa.String(), nullable=False),
+    sa.Column('national_ID', sa.String(), nullable=False),
+    sa.Column('gender', sa.String(), nullable=False),
+    sa.Column('DOB', sa.DateTime(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
+    sa.Column('phone', sa.String(), nullable=False),
+    sa.Column('address', sa.VARCHAR(), nullable=False),
+    sa.Column('role', sa.String(), nullable=False),
+    sa.Column('active_status', sa.Boolean(), nullable=False),
+    sa.Column('profile_picture', sa.VARCHAR(), nullable=False),
+    sa.Column('date_joined', sa.DateTime(), nullable=False),
+    sa.Column('marital_status', sa.String(), nullable=False),
+    sa.Column('nationality', sa.String(), nullable=False),
+    sa.Column('emergency_contact', sa.String(), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('phone')
     )
     op.create_table('jobapplicants',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -58,40 +79,6 @@ def upgrade():
     sa.Column('project_status', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('employees',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('first_name', sa.String(), nullable=False),
-    sa.Column('last_name', sa.String(), nullable=False),
-    sa.Column('national_ID', sa.String(), nullable=False),
-    sa.Column('gender', sa.String(), nullable=False),
-    sa.Column('DOB', sa.DateTime(), nullable=False),
-    sa.Column('email', sa.String(), nullable=False),
-    sa.Column('phone', sa.String(), nullable=False),
-    sa.Column('address', sa.VARCHAR(), nullable=False),
-    sa.Column('role', sa.String(), nullable=False),
-    sa.Column('active_status', sa.Boolean(), nullable=False),
-    sa.Column('profile_picture', sa.VARCHAR(), nullable=False),
-    sa.Column('date_joined', sa.DateTime(), nullable=False),
-    sa.Column('marital_status', sa.String(), nullable=False),
-    sa.Column('nationality', sa.String(), nullable=False),
-    sa.Column('emergency_contact', sa.String(), nullable=False),
-    sa.Column('employee_leave', sa.Integer(), nullable=True),
-    sa.Column('employee_department', sa.Integer(), nullable=True),
-    sa.Column('employee_project', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['employee_department'], ['departments.id'], ),
-    sa.ForeignKeyConstraint(['employee_leave'], ['leaves.id'], ),
-    sa.ForeignKeyConstraint(['employee_project'], ['projects.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email'),
-    sa.UniqueConstraint('phone')
-    )
-    op.create_table('interviews',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('time', sa.DateTime(), nullable=False),
-    sa.Column('applicant_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['applicant_id'], ['jobapplicants.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
     op.create_table('bankdetails',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('employee_salary', sa.String(), nullable=False),
@@ -102,7 +89,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('department_employee',
+    op.create_table('department_employees',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('department_id', sa.Integer(), nullable=True),
     sa.Column('employee_id', sa.Integer(), nullable=True),
@@ -128,7 +115,14 @@ def upgrade():
     sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('on_leave_employee',
+    op.create_table('interviews',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('time', sa.DateTime(), nullable=False),
+    sa.Column('applicant_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['applicant_id'], ['jobapplicants.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('on_leave_employees',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('leave_id', sa.Integer(), nullable=True),
     sa.Column('employee_id', sa.Integer(), nullable=True),
@@ -136,7 +130,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['leave_id'], ['leaves.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('project_employee',
+    op.create_table('project_employees',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('project_id', sa.Integer(), nullable=True),
     sa.Column('employee_id', sa.Integer(), nullable=True),
@@ -158,17 +152,17 @@ def upgrade():
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('references')
-    op.drop_table('project_employee')
-    op.drop_table('on_leave_employee')
+    op.drop_table('project_employees')
+    op.drop_table('on_leave_employees')
+    op.drop_table('interviews')
     op.drop_table('documents')
     op.drop_table('dependants')
-    op.drop_table('department_employee')
+    op.drop_table('department_employees')
     op.drop_table('bankdetails')
-    op.drop_table('interviews')
-    op.drop_table('employees')
     op.drop_table('projects')
     op.drop_table('leaves')
     op.drop_table('jobapplicants')
+    op.drop_table('employees')
     op.drop_table('departments')
     op.drop_table('admins')
     # ### end Alembic commands ###

@@ -7,7 +7,7 @@ from flask_cors import CORS
 from datetime import timedelta
 
 
-from models import db, Interview
+from models import db, Interview, Dependant, Department_employee
 from schemas import ma
 
 from resources.admin import bcrypt,jwt, Admin_SignUp, Admin_Login, Admin_by_id, Admin_list
@@ -111,13 +111,66 @@ def get_interviews():
             'time': interview.time,
             'applicant_first_name': interview.jobapplicant.first_name,
             "applicant_last_name": interview.jobapplicant.last_name,
-            'applicant_experience':interview.jobapplicant.experience
+            'applicant_experience':interview.jobapplicant.experience,
+            'role_applied': interview.jobapplicant.role_applied
             # Add other JobApplicant attributes as needed
         }
         interview_data.append(interview_info)
 
     # Return the interview data as JSON
     return jsonify(interview_data)
+
+
+
+@app.route('/dependants1')
+def get_dependants():
+    # Fetch all interviews from the database
+    dependants = Dependant.query.all()
+
+    # Create a list to store interview data
+    dependants_data = []
+
+    # Iterate over interviews and extract relevant data
+    for dependant in dependants:
+        dependant_info = {
+            'id': dependant.id,
+            'employee_first_name': dependant.employee.first_name,
+            'employee_last_name': dependant.employee.last_name,
+            'dependant_first_name': dependant.first_name,
+            'dependant_last_name': dependant.last_name
+            
+            # 'department_employee_role':department_employee.employee.role
+            # 'leave_end':department.leave.leave_to
+            # Add other JobApplicant attributes as needed
+        }
+        dependants_data.append(dependant_info)
+
+    # Return the interview data as JSON
+    return jsonify(dependants_data)
+
+
+@app.route('/department_employees1')
+def get_department_employees():
+    # Fetch all interviews from the database
+    department_employees = Department_employee.query.all()
+
+    # Create a list to store interview data
+    department_employees_data = []
+
+    # Iterate over interviews and extract relevant data
+    for department_employee in department_employees:
+        department_employee_info = {
+            'id': department_employee.id,
+            'employee_id': department_employee.employee.id,
+            'department_name': department_employee.department.department_name,
+            'employee_first_name': department_employee.employee.first_name,
+            'employee_last_name': department_employee.employee.last_name
+            # Add other JobApplicant attributes as needed
+        }
+        department_employees_data.append(department_employee_info)
+
+    # Return the interview data as JSON
+    return jsonify(department_employees_data)
 
 
 if __name__ == '__main__':
