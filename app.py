@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask , jsonify
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
@@ -7,7 +7,7 @@ from flask_cors import CORS
 from datetime import timedelta
 
 
-from models import db
+from models import db, Interview
 from schemas import ma
 
 from resources.admin import bcrypt,jwt, Admin_SignUp, Admin_Login, Admin_by_id, Admin_list
@@ -95,6 +95,29 @@ api.add_resource(Project_Employee_by_id, '/project_employees/<int:id>')
 api.add_resource(Reference_list, '/references')
 api.add_resource(Reference_by_id, '/references/<int:id>')
 
+
+@app.route('/interviews1')
+def get_interviews():
+    # Fetch all interviews from the database
+    interviews = Interview.query.all()
+
+    # Create a list to store interview data
+    interview_data = []
+
+    # Iterate over interviews and extract relevant data
+    for interview in interviews:
+        interview_info = {
+            'id': interview.id,
+            'time': interview.time,
+            'applicant_first_name': interview.jobapplicant.first_name,
+            "applicant_last_name": interview.jobapplicant.last_name,
+            'applicant_experience':interview.jobapplicant.experience
+            # Add other JobApplicant attributes as needed
+        }
+        interview_data.append(interview_info)
+
+    # Return the interview data as JSON
+    return jsonify(interview_data)
 
 
 if __name__ == '__main__':
