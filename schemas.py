@@ -73,14 +73,29 @@ class ReferenceSchema(ma.SQLAlchemyAutoSchema):
 reference_schema = ReferenceSchema()
 references_schema = ReferenceSchema(many=True)
 
+class InterviewSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model= Interview
+        load_instance = True
 
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "interview_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("interview_list"),
+        }
+    )
+
+interview_schema = InterviewSchema()
+interviews_schema = InterviewSchema(many=True)
 
 class JobApplicantSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= JobApplicant
         load_instance = True
 
-    # interview = ma.Nested(InterviewSchema)
+    interview = ma.Nested(InterviewSchema)
 
     url = ma.Hyperlinks(
         {
@@ -94,27 +109,6 @@ class JobApplicantSchema(ma.SQLAlchemyAutoSchema):
 job_applicant_schema = JobApplicantSchema()
 job_applicants_schema = JobApplicantSchema(many=True)
 
-
-class InterviewSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model= Interview
-        load_instance = True
-
-        
-
-    url = ma.Hyperlinks(
-        {
-            "self": ma.URLFor(
-                "interview_by_id",
-                values=dict(id="<id>")),
-            "collection": ma.URLFor("interview_list"),
-        }
-    )
-
-    applicant = ma.Nested(JobApplicantSchema)
-
-interview_schema = InterviewSchema()
-interviews_schema = InterviewSchema(many=True)
 
 class BankDetailSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
