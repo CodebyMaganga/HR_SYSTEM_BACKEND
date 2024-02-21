@@ -2,7 +2,7 @@ from flask_restful import Resource, reqparse
 from flask import make_response,jsonify ,request
 from flask_jwt_extended import jwt_required
 
-from models import db, Interview
+from models import db, Interview, JobApplicant
 from schemas import InterviewSchema, interview_schema, interviews_schema
 
 class Interview_list(Resource):
@@ -11,7 +11,7 @@ class Interview_list(Resource):
     parser.add_argument('applicant_id', required=True, help="applicant_id is required")
 
     def get(self):
-        interviews = Interview.query.all()
+        interviews = Interview.query.join(JobApplicant).all()
 
         response = make_response(
             interviews_schema.dump(interviews),
