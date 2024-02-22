@@ -10,7 +10,7 @@ from datetime import timedelta
 from models import db, Interview, Dependant, Department_employee
 from schemas import ma
 
-from resources.admin import bcrypt,jwt, Admin_SignUp, Admin_Login, Admin_by_id, Admin_list
+from resources.admin import bcrypt,jwt,  Admin_Login, Admin_by_id, Admin_list
 from resources.bank_details import BankDetail_list, BankDetail_by_id
 from resources.department_employees import Department_employee_list, Department_employee_by_id
 from resources.departments import Department_list, Department_by_id
@@ -54,7 +54,7 @@ jwt.init_app(app)
 def index():
     return "code check one two"
 
-api.add_resource(Admin_SignUp, '/signup')
+# api.add_resource(Admin_SignUp, '/signup')
 api.add_resource(Admin_Login, '/login')
 
 api.add_resource(BankDetail_list, '/bank_details')
