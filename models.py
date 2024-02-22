@@ -139,6 +139,7 @@ class JobApplicant(db.Model):
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
     photo = db.Column(db.String, nullable=False)
+    email=db.Column(db.String, unique=True, nullable=False)
     address = db.Column(db.String, nullable=False)
     experience = db.Column(db.String, nullable=False)
     role_applied = db.Column(db.String, nullable=False)

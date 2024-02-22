@@ -105,18 +105,18 @@ with app.app_context():
 
     # Job Applicants
     job_applicants = [
-        JobApplicant(first_name="Eva", last_name="Green", photo="path/to/photo1.jpg", address="789 Down St", experience="5 years", role_applied="Marketing Manager", status="Applied"),
-        JobApplicant(first_name="Frank", last_name="Wright", photo="path/to/photo2.jpg", address="321 Up St", experience="3 years", role_applied="Sales Representative", status="Interviewed"),
-        JobApplicant(first_name="Eva", last_name="Green", photo="path/to/photo1.jpg", address="789 Down St", experience="5 years", role_applied="Marketing Manager", status="Applied"),
-        JobApplicant(first_name="Frank", last_name="Wright", photo="path/to/photo2.jpg", address="321 Up St", experience="3 years", role_applied="Sales Representative", status="Interviewed"),
-        JobApplicant(first_name="Alice", last_name="Brown", photo="path/to/photo3.jpg", address="123 Park Ave", experience="2 years", role_applied="HR Coordinator", status="Applied"),
-        JobApplicant(first_name="Bob", last_name="Johnson", photo="path/to/photo4.jpg", address="456 Maple Dr", experience="4 years", role_applied="Project Manager", status="Rejected"),
-        JobApplicant(first_name="Carol", last_name="Davis", photo="path/to/photo5.jpg", address="789 Oak Ln", experience="1 year", role_applied="Accountant", status="Applied"),
-        JobApplicant(first_name="David", last_name="Wilson", photo="path/to/photo6.jpg", address="135 Pine St", experience="6 years", role_applied="IT Specialist", status="Interviewed"),
-        JobApplicant(first_name="Ella", last_name="Martinez", photo="path/to/photo7.jpg", address="246 Cedar Rd", experience="3 years", role_applied="Customer Service", status="Applied"),
-        JobApplicant(first_name="George", last_name="Hernandez", photo="path/to/photo8.jpg", address="531 Birch Pl", experience="5 years", role_applied="Product Manager", status="Rejected"),
-        JobApplicant(first_name="Hannah", last_name="Lee", photo="path/to/photo9.jpg", address="678 Elm St", experience="2 years", role_applied="Graphic Designer", status="Applied"),
-        JobApplicant(first_name="Ian", last_name="King", photo="path/to/photo10.jpg", address="910 Spruce Ave", experience="4 years", role_applied="Software Engineer", status="Interviewed")
+        JobApplicant(first_name="Eva", last_name="Green", photo="path/to/photo1.jpg", email="aelnough0@github.io",address="789 Down St", experience="5 years", role_applied="Marketing Manager", status="Applied"),
+        JobApplicant(first_name="Frank", last_name="Wright", photo="path/to/photo2.jpg", email="cilson1@oakley.com",address="321 Up St", experience="3 years", role_applied="Sales Representative", status="Interviewed"),
+        JobApplicant(first_name="Eva", last_name="Green", photo="path/to/photo1.jpg", email="grizzini2@e-recht24.de",address="789 Down St", experience="5 years", role_applied="Marketing Manager", status="Applied"),
+        JobApplicant(first_name="Frank", last_name="Wright", photo="path/to/photo2.jpg",email="nfloyde3@diigo.com",address="321 Up St", experience="3 years", role_applied="Sales Representative", status="Interviewed"),
+        JobApplicant(first_name="Alice", last_name="Brown", photo="path/to/photo3.jpg", email="edurukuze0@github.io",address="123 Park Ave", experience="2 years", role_applied="HR Coordinator", status="Applied"),
+        JobApplicant(first_name="Bob", last_name="Johnson", photo="path/to/photo4.jpg", email="npoyser4@oaic.gov.au",address="456 Maple Dr", experience="4 years", role_applied="Project Manager", status="Rejected"),
+        JobApplicant(first_name="Carol", last_name="Davis", photo="path/to/photo5.jpg", email="agosnold5@indiegogo.com",address="789 Oak Ln", experience="1 year", role_applied="Accountant", status="Applied"),
+        JobApplicant(first_name="David", last_name="Wilson", photo="path/to/photo6.jpg", email="Cagh0@github.io",address="135 Pine St", experience="6 years", role_applied="IT Specialist", status="Interviewed"),
+        JobApplicant(first_name="Ella", last_name="Martinez", photo="path/to/photo7.jpg", email="lprestwich6@miitbeian.gov.cn",address="246 Cedar Rd", experience="3 years", role_applied="Customer Service", status="Applied"),
+        JobApplicant(first_name="George", last_name="Hernandez", photo="path/to/photo8.jpg", email="eoleszkiewicz7@netlog.com",address="531 Birch Pl", experience="5 years", role_applied="Product Manager", status="Rejected"),
+        JobApplicant(first_name="Hannah", last_name="Lee", photo="path/to/photo9.jpg", email="kduck8@china.com.cn",address="678 Elm St", experience="2 years", role_applied="Graphic Designer", status="Applied"),
+        JobApplicant(first_name="Ian", last_name="King", photo="path/to/photo10.jpg", email="wcarcass9@webnode.com",address="910 Spruce Ave", experience="4 years", role_applied="Software Engineer", status="Interviewed")
     ]
     db.session.bulk_save_objects(job_applicants)
 

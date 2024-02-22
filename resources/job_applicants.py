@@ -10,6 +10,7 @@ class JobApplicant_list(Resource):
     parser.add_argument('first_name', required=True, help="first_name is required")
     parser.add_argument('last_name', required=True, help="last_name is required")
     parser.add_argument('photo', required=True, help="photo is required")
+    parser.add_argument('email', required=True, help="email is required")
     parser.add_argument('address', required=True, help="address is required")
     parser.add_argument('experience', required=True, help="experience is required")
     parser.add_argument('role_applied', required=True, help="role_applied is required")
