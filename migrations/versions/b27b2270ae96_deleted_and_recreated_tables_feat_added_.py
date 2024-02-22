@@ -1,8 +1,8 @@
-"""Recreated models and tables and edited relationships
+"""deleted and recreated tables feat:added email to job_applicants
 
-Revision ID: 8874fca464d6
+Revision ID: b27b2270ae96
 Revises: 
-Create Date: 2024-02-21 01:51:01.248922
+Create Date: 2024-02-22 16:55:50.081287
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8874fca464d6'
+revision = 'b27b2270ae96'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -59,11 +59,13 @@ def upgrade():
     sa.Column('first_name', sa.String(), nullable=False),
     sa.Column('last_name', sa.String(), nullable=False),
     sa.Column('photo', sa.String(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
     sa.Column('address', sa.String(), nullable=False),
     sa.Column('experience', sa.String(), nullable=False),
     sa.Column('role_applied', sa.String(), nullable=False),
     sa.Column('status', sa.String(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email')
     )
     op.create_table('leaves',
     sa.Column('id', sa.Integer(), nullable=False),
