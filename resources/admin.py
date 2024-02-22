@@ -11,40 +11,40 @@ bcrypt = Bcrypt()
 
 jwt = JWTManager()
 
-class Admin_SignUp(Resource):
-    parser = reqparse.RequestParser()
-    parser.add_argument('first_name', required=True, help="first_name is required")
-    parser.add_argument('last_name', required=True, help="last_name is required")
-    parser.add_argument('email', required=True, help="email is required")
-    parser.add_argument('password', required=True, help="password is required")
+# class Admin_SignUp(Resource):
+#     parser = reqparse.RequestParser()
+#     parser.add_argument('first_name', required=True, help="first_name is required")
+#     parser.add_argument('last_name', required=True, help="last_name is required")
+#     parser.add_argument('email', required=True, help="email is required")
+#     parser.add_argument('password', required=True, help="password is required")
 
 
-    def get(self):
-        admins= Admin.query.all()
+#     def get(self):
+#         admins= Admin.query.all()
 
-        response = make_response(
-            admins_schema.dump(admins),
-            200,
-        )
+#         response = make_response(
+#             admins_schema.dump(admins),
+#             200,
+#         )
 
-        return response
+#         return response
     
-    def post(self):
-        data = Admin_SignUp.parser.parse_args()
-        new_admin = Admin(**data)
+#     def post(self):
+#         data = Admin_SignUp.parser.parse_args()
+#         new_admin = Admin(**data)
 
-        if not new_admin.email or not new_admin.password:
-            return {'message': 'Both email and password are required'}, 400
+#         if not new_admin.email or not new_admin.password:
+#             return {'message': 'Both email and password are required'}, 400
 
-        # Check if the email is already registered
-        if Admin.query.filter_by(email = new_admin.email).first():
-            return {'message': 'Admin already registered'}, 400
+#         # Check if the email is already registered
+#         if Admin.query.filter_by(email = new_admin.email).first():
+#             return {'message': 'Admin already registered'}, 400
 
-        new_admin.password = generate_password_hash(new_admin.password).decode('utf-8')
-        db.session.add(new_admin)
-        db.session.commit()
+#         new_admin.password = generate_password_hash(new_admin.password).decode('utf-8')
+#         db.session.add(new_admin)
+#         db.session.commit()
 
-        return ({'message': 'Admin registered successfully'}), 201
+#         return ({'message': 'Admin registered successfully'}), 201
     
 class Admin_Login(Resource):
         parser = reqparse.RequestParser()
