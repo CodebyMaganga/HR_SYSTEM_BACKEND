@@ -77,6 +77,9 @@ class InterviewSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Interview
         load_instance = True
+        include_fk = True
+
+    jobapplicant = ma.Nested(lambda: JobApplicantSchema, many = False, exclude = ('interview',))
 
     url = ma.Hyperlinks(
         {
@@ -95,7 +98,7 @@ class JobApplicantSchema(ma.SQLAlchemyAutoSchema):
         model= JobApplicant
         load_instance = True
 
-    interview = ma.Nested(InterviewSchema)
+    interview = ma.Nested( InterviewSchema, many = False, exclude = ('jobapplicant',))
 
     url = ma.Hyperlinks(
         {
@@ -114,6 +117,7 @@ class BankDetailSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= BankDetail
         load_instance = True
+        include_fk = True
 
     url = ma.Hyperlinks(
         {
@@ -139,6 +143,9 @@ class EmployeeSchema(ma.SQLAlchemyAutoSchema):
     documents = ma.Nested(DocumentSchema, many = True)
     bankdetails = ma.Nested(BankDetailSchema, many = True)
 
+    # department = ma.Nested( lambda: DepartmentSchema, exclude = ('department_employees',))
+
+
 
     url = ma.Hyperlinks(
         {
@@ -158,6 +165,9 @@ class Department_employeeSchema (ma.SQLAlchemyAutoSchema):
         model= Department_employee
         include_fk = True
         load_instance = True
+
+    employee = ma.Nested( EmployeeSchema)
+    # department = ma.Nested( lambda: DepartmentSchema, exclude = ('department_employees',))
 
     url = ma.Hyperlinks(
         {
@@ -198,6 +208,9 @@ class Project_employeeSchema (ma.SQLAlchemyAutoSchema):
         include_fk = True
         load_instance = True
 
+    employee = ma.Nested( EmployeeSchema)
+    # project = ma.Nested( lambda: ProjectSchema, exclude = ('project_employees',))
+
     url = ma.Hyperlinks(
         {
             "self": ma.URLFor(
@@ -236,6 +249,9 @@ class OnLeave_employeeSchema (ma.SQLAlchemyAutoSchema):
         model= Project_employee
         include_fk = True
         load_instance = True
+
+    employee = ma.Nested( EmployeeSchema)
+    # leave = ma.Nested( lambda: LeaveSchema, exclude = ('employees_on_leave',))
 
     url = ma.Hyperlinks(
         {
