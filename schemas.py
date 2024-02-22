@@ -26,6 +26,9 @@ class DependantSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Dependant
         load_instance = True
+        include_fk = True
+
+    employee = ma.Nested(lambda: EmployeeSchema, many = False, exclude = ('dependants',))    
 
     url = ma.Hyperlinks(
         {
@@ -43,6 +46,9 @@ class DocumentSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Document
         load_instance = True
+        include_fk = True
+
+    employee = ma.Nested(lambda: EmployeeSchema, many = False, exclude = ('documents',))
 
     url = ma.Hyperlinks(
         {
@@ -60,6 +66,9 @@ class ReferenceSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Reference
         load_instance = True
+        include_fk = True
+
+    employee = ma.Nested(lambda: EmployeeSchema, many = False, exclude = ('references',))
 
     url = ma.Hyperlinks(
         {
@@ -119,6 +128,8 @@ class BankDetailSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         include_fk = True
 
+    employee = ma.Nested(lambda: EmployeeSchema, many = False, exclude = ('bankdetails',))
+
     url = ma.Hyperlinks(
         {
             "self": ma.URLFor(
@@ -138,10 +149,10 @@ class EmployeeSchema(ma.SQLAlchemyAutoSchema):
         include_fk = True
         load_instance = True
 
-    dependants = ma.Nested(DependantSchema, many = True)
-    references = ma.Nested(ReferenceSchema, many = True)
-    documents = ma.Nested(DocumentSchema, many = True)
-    bankdetails = ma.Nested(BankDetailSchema, many = True)
+    dependants = ma.Nested(DependantSchema, many = True, exclude = ('employee',))
+    references = ma.Nested(ReferenceSchema, many = True, exclude = ('employee',))
+    documents = ma.Nested(DocumentSchema, many = True, exclude = ('employee',))
+    bankdetails = ma.Nested(BankDetailSchema, many = True, exclude = ('employee',))
 
     # department = ma.Nested( lambda: DepartmentSchema, exclude = ('department_employees',))
 
