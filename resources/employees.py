@@ -21,17 +21,17 @@ class Employee_list(Resource):
     employees_parser.add_argument('date_joined', required=True, help="date_joined is required")
     employees_parser.add_argument('marital_status', required=True, help="marital_status is required")
     employees_parser.add_argument('nationality', required=True, help="nationality is required")
-    employees_parser.add_argument('bank_details', type = dict)
+    employees_parser.add_argument('bankdetails', type = dict)
     employees_parser.add_argument('dependants', type = dict)
     employees_parser.add_argument('references', type = dict)
     employees_parser.add_argument('documents', type = dict)
 
     bank_details_parser = reqparse.RequestParser()
-    bank_details_parser.add_argument('employee_salary', required=True, help="employee_salary is required", location = 'bank_details')
-    bank_details_parser.add_argument('employee_account', required=True, help="employee_account is required", location = 'bank_details')
-    bank_details_parser.add_argument('employee_bank', required=True, help="employee_bank is required", location = 'bank_details')
-    bank_details_parser.add_argument('branch_code', required=True, help="branch_code is required", location = 'bank_details')
-    bank_details_parser.add_argument('employee_id', required=True, help="employee_id is required", location = 'bank_details')
+    bank_details_parser.add_argument('employee_salary', required=True, help="employee_salary is required", location = 'bankdetails')
+    bank_details_parser.add_argument('employee_account', required=True, help="employee_account is required", location = 'bankdetails')
+    bank_details_parser.add_argument('employee_bank', required=True, help="employee_bank is required", location = 'bankdetails')
+    bank_details_parser.add_argument('branch_code', required=True, help="branch_code is required", location = 'bankdetails')
+    # bank_details_parser.add_argument('employee_id', required=True, help="employee_id is required", location = 'bank_details')
 
     dependants_parser = reqparse.RequestParser()
     dependants_parser.add_argument('first_name', required=True, help="first_name is required", location = 'dependants')
@@ -39,16 +39,16 @@ class Employee_list(Resource):
     dependants_parser.add_argument('gender', required=True, help="gender is required", location = 'dependants')
     dependants_parser.add_argument('age', required=True, help="age is required", location = 'dependants')
     dependants_parser.add_argument('relationship', required=True, help="relationship is required", location = 'dependants')
-    dependants_parser.add_argument('employee_id', required=True, help="employee_id is required", location = 'dependants')
+    # dependants_parser.add_argument('employee_id', required=True, help="employee_id is required", location = 'dependants')
 
     references_parser = reqparse.RequestParser()
     references_parser.add_argument('reference_name', required=True, help="reference_name is required", location = 'references')
     references_parser.add_argument('reference_phone', required=True, help="reference_phone is required", location = 'references')
-    references_parser.add_argument('employee_id', required=True, help="employee_id is required", location = 'references')
+    # references_parser.add_argument('employee_id', required=True, help="employee_id is required", location = 'references')
 
     documents_parser = reqparse.RequestParser()
     documents_parser.add_argument('document_type', required=True, help="document_type is required", location = 'documents')
-    documents_parser.add_argument('employee_id', required=True, help="employee_id is required", location = 'documents')
+    # documents_parser.add_argument('employee_id', required=True, help="employee_id is required", location = 'documents')
 
 
     def get(self):
@@ -63,10 +63,10 @@ class Employee_list(Resource):
     
     def post(self):
         employee_data = Employee_list.employees_parser.parse_args()
-        bank_details_data = Employee_list.bank_details_parser.parse_args(req = Employee_list.employees_parser)
-        dependants_data = Employee_list.dependants_parser.parse_args(req = Employee_list.employees_parser)
-        references_data = Employee_list.references_parser.parse_args(req = Employee_list.employees_parser)
-        documents_data = Employee_list.documents_parser.parse_args(req = Employee_list.employees_parser)
+        bank_details_data = Employee_list.bank_details_parser.parse_args(req = Employee_list.employees_parser.parse_args())
+        dependants_data = Employee_list.dependants_parser.parse_args(req = Employee_list.employees_parser.parse_args())
+        references_data = Employee_list.references_parser.parse_args(req = Employee_list.employees_parser.parse_args())
+        documents_data = Employee_list.documents_parser.parse_args(req = Employee_list.employees_parser.parse_args())
 
         new_employee = Employee(**employee_data)
         db.session.add(new_employee)
