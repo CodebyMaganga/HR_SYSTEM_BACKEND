@@ -21,10 +21,10 @@ class Employee_list(Resource):
     employees_parser.add_argument('date_joined', required=True, help="date_joined is required")
     employees_parser.add_argument('marital_status', required=True, help="marital_status is required")
     employees_parser.add_argument('nationality', required=True, help="nationality is required")
-    employees_parser.add_argument('bankdetails', type = dict)
-    employees_parser.add_argument('dependants', type = dict)
-    employees_parser.add_argument('references', type = dict)
-    employees_parser.add_argument('documents', type = dict)
+    employees_parser.add_argument('bankdetails', type = dict, action = "append")
+    employees_parser.add_argument('dependants', type = dict, action = "append")
+    employees_parser.add_argument('references', type = dict, action = "append")
+    employees_parser.add_argument('documents', type = dict, action = "append")
 
     bank_details_parser = reqparse.RequestParser()
     bank_details_parser.add_argument('employee_salary', required=True, help="employee_salary is required", location = 'bankdetails')
@@ -60,6 +60,50 @@ class Employee_list(Resource):
         )
 
         return response
+    
+    # def post(self):
+    #     data = request.get_json()
+
+    #     # Extract employee data
+    #     employee_data = data.get('employee', {})
+    #     print(employee_data)
+
+    #     # Create new employee
+    #     new_employee = Employee(**employee_data)
+    #     db.session.add(new_employee)
+    #     db.session.commit()
+
+    #     # If bank details are provided
+    #     if 'bankdetails' in data:
+    #         bank_details_data = data['bankdetails']
+    #         new_bank_details = BankDetail(**bank_details_data, employee_id=new_employee.id)
+    #         db.session.add(new_bank_details)
+        
+    #     # If dependants are provided
+    #     if 'dependants' in data:
+    #         dependants_data = data['dependants']
+    #         new_dependants = [Dependant(**d, employee_id=new_employee.id) for d in dependants_data]
+    #         db.session.add_all(new_dependants)
+        
+    #     # If references are provided
+    #     if 'references' in data:
+    #         references_data = data['references']
+    #         new_references = [Reference(**r, employee_id=new_employee.id) for r in references_data]
+    #         db.session.add_all(new_references)
+        
+    #     # If documents are provided
+    #     if 'documents' in data:
+    #         documents_data = data['documents']
+    #         new_documents = [Document(**d, employee_id=new_employee.id) for d in documents_data]
+    #         db.session.add_all(new_documents)
+
+    #     db.session.commit()
+
+    #     response = make_response(
+    #         employee_schema.dump(new_employee),
+    #         201
+    #     )
+    #     return response
     
     def post(self):
         employee_data = Employee_list.employees_parser.parse_args()
