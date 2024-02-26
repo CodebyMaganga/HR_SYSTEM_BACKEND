@@ -149,6 +149,11 @@ class EmployeeSchema(ma.SQLAlchemyAutoSchema):
         include_fk = True
         load_instance = True
 
+    
+    employee_leave = ma.Nested(lambda: OnLeave_employeeSchema, many = False, exclude = ('employee',))
+    employee_department = ma.Nested(lambda: Department_employeeSchema, many = False, exclude = ('employee',))
+    employee_project = ma.Nested(lambda: Project_employeeSchema, many = False, exclude = ('employee',))
+    
     dependants = ma.Nested(DependantSchema, many = True, exclude = ('employee',))
     references = ma.Nested(ReferenceSchema, many = True, exclude = ('employee',))
     documents = ma.Nested(DocumentSchema, many = True, exclude = ('employee',))
