@@ -127,31 +127,35 @@ class Employee_by_id(Resource):
         db.session.add(employee)
         db.session.commit()
 
-        # bank_detail = BankDetail.query.filter_by(employee_id=id).first()
-        # for attr in request.get_json():
-        #     setattr(bank_detail, attr, request.get_json().get(attr)) 
+        bank_details = BankDetail.query.filter_by(employee_id=id)
+        for detail in bank_details:
+            for attr in request.get_json():
+                setattr(detail, attr, request.get_json().get(attr)) 
 
-        # db.session.add(bank_detail) 
+        db.session.add(detail) 
 
-        # dependant = Dependant.query.filter_by(employee_id=id).first()
-        # for attr in request.get_json():
-        #     setattr(dependant, attr, request.get_json().get(attr))
+        dependants = Dependant.query.filter_by(employee_id=id)
+        for dependant in dependants:
+            for attr in request.get_json():
+                setattr(dependant, attr, request.get_json().get(attr))
         
-        # db.session.add(dependant)
+        db.session.add(dependant)
 
-        # reference = Reference.query.filter_by(employee_id=id).first()
-        # for attr in request.get_json():
-        #     setattr(reference, attr, request.get_json().get(attr))
+        references = Reference.query.filter_by(employee_id=id)
+        for reference in references:
+            for attr in request.get_json():
+                setattr(reference, attr, request.get_json().get(attr))
         
-        # db.session.add(reference)
+        db.session.add(reference)
 
-        # document = Document.query.filter_by(employee_id=id).first()
-        # for attr in request.get_json():
-        #     setattr(document, attr, request.get_json().get(attr))
+        documents = Document.query.filter_by(employee_id=id)
+        for document in documents:
+            for attr in request.get_json():
+                setattr(document, attr, request.get_json().get(attr))
         
-        # db.session.add(document)
+        db.session.add(document)
 
-        # db.session.commit()
+        db.session.commit()
 
 
         response = make_response(
