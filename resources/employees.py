@@ -1,5 +1,9 @@
 from flask_restful import Resource, reqparse
 from flask import make_response,jsonify ,request
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
+#from app import app
 from flask_jwt_extended import jwt_required
 from datetime import datetime
 
@@ -18,6 +22,23 @@ class Employee_list(Resource):
 
         return response
     
+    # #a post function to allow uploading an image or file
+    # def upload_file():
+    #     #get access to the actual picture
+    #     profile_picture = request.files['profile_picture']#profile_picture is the name in the input field on the front end
+    #     #if the user has then uploaded a file or image without the name given above; the below function checks that
+    #     if not profile_picture:
+    #         return "No profile picture uploaded", 400
+        
+    #     #after getting the image, get the image name and its file.to get file names securely, import secure_filename
+    #     filename = secure_filename(profile_picture.filename)
+
+    #     employee= Employee(profile_picture=profile_picture.read())
+    #     db.session.add(employee)
+    #     db.session.commit()
+
+    #     return "Profile picture has been uploaded!", 200
+
     def post(self):
         data = request.get_json()
         # Create new employee
@@ -38,9 +59,35 @@ class Employee_list(Resource):
             marital_status = data["marital_status"],
             emergency_contact = data["emergency_contact"],
             )
+        # #after getting the image, get the image name(filename to store it in the server)
+        # profile_picture = request.files['profile_picture']
+        # pic_filename = secure_filename(profile_picture.filename)
+
+        # #when users upload same image with same name; randomize the nme with uuid
+        # pic_name = str(uuid.uuid1()) + "_" + pic_filename
+
+        #  #save the image
+        # saver= data["profile_picture"]
+        
+        # #change it to a string to save to db
+        # profile_picture = pic_name
+
+        # Handle file upload
+        profile_picture = request.files.get('profile_picture')
+        if profile_picture:
+            # Generate a unique filename
+            filename = secure_filename(profile_picture.filename)
+            pic_name = str(uuid.uuid1()) + "_" + filename
+            # Save the image to the upload folder
+            profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+            # Save the filename to the new employee record
+            new_employee.profile_picture = pic_name
+    
+
 
         db.session.add(new_employee)
         db.session.commit()
+        #saver.save(os.path.join(app.config['UPLOAD_FOLDER']),pic_name)
 
 
         # If bank details are provided
