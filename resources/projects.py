@@ -10,7 +10,7 @@ class Project_list(Resource):
     parser.add_argument('title', required=True, help="title is required")
     parser.add_argument('project_status', required=True, help="project_status is required")
 
-
+    @jwt_required()
     def get(self):
         projects = Project.query.all()
 
