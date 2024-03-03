@@ -262,7 +262,7 @@ projects_schema = ProjectSchema(many=True)
 
 class OnLeave_employeeSchema (ma.SQLAlchemyAutoSchema):
     class Meta:
-        model= Project_employee
+        model= OnLeave_employee
         include_fk = True
         load_instance = True
 
