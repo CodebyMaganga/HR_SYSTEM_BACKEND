@@ -166,8 +166,9 @@ class Employee_by_id(Resource):
 
             return response
     
-    def patch(self,id):
+    def patch(self, id):
         employee = Employee.query.filter_by(id=id).first()
+
         for attr in request.get_json():
             setattr(employee, attr, request.get_json().get(attr))
 
@@ -177,33 +178,28 @@ class Employee_by_id(Resource):
         bank_details = BankDetail.query.filter_by(employee_id=id)
         for detail in bank_details:
             for attr in request.get_json():
-                setattr(detail, attr, request.get_json().get(attr)) 
-
-        db.session.add(detail) 
+                setattr(detail, attr, request.get_json().get(attr))
+            db.session.add(detail)
 
         dependants = Dependant.query.filter_by(employee_id=id)
         for dependant in dependants:
             for attr in request.get_json():
                 setattr(dependant, attr, request.get_json().get(attr))
-        
-        db.session.add(dependant)
+            db.session.add(dependant)
 
         references = Reference.query.filter_by(employee_id=id)
         for reference in references:
             for attr in request.get_json():
                 setattr(reference, attr, request.get_json().get(attr))
-        
-        db.session.add(reference)
+            db.session.add(reference)
 
         documents = Document.query.filter_by(employee_id=id)
         for document in documents:
             for attr in request.get_json():
                 setattr(document, attr, request.get_json().get(attr))
-        
-        db.session.add(document)
+            db.session.add(document)
 
         db.session.commit()
-
 
         response = make_response(
             employee_schema.dump(employee),
