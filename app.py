@@ -16,6 +16,7 @@ from resources.bank_details import BankDetail_list, BankDetail_by_id
 from resources.department_employees import Department_employee_list, Department_employee_by_id
 from resources.departments import Department_list, Department_by_id
 from resources.dependants import Dependant_list, Dependant_by_id
+from resources.emergency_contacts import EmergencyContact_list, EmergencyContact_by_id
 from resources.documents import Document_list, Document_by_id
 from resources.employees import Employee_list, Employee_by_id
 from resources.interviews import Interview_list, Interview_by_id
@@ -73,6 +74,9 @@ api.add_resource(Department_by_id, '/departments/<int:id>')
 
 api.add_resource(Dependant_list, '/dependants')
 api.add_resource(Dependant_by_id, '/dependants/<int:id>')
+
+api.add_resource(EmergencyContact_list, '/emergency_contacts')
+api.add_resource(EmergencyContact_by_id, '/emergency_contacts/<int:id>')
 
 api.add_resource(Document_list, '/documents')
 api.add_resource(Document_by_id, '/documents/<int:id>')

@@ -7,7 +7,7 @@ import os
 from flask_jwt_extended import jwt_required
 from datetime import datetime
 
-from models import db, Employee, BankDetail, Dependant, Reference, Document
+from models import db, Employee, BankDetail, Dependant, EmergencyContact, Reference, Document
 from schemas import EmployeeSchema, employee_schema, employees_schema
 
 
@@ -45,7 +45,7 @@ class Employee_list(Resource):
         new_employee = Employee(
             first_name = data["first_name"] ,
             last_name = data["last_name"],
-            DOB = datetime.strptime(data['DOB'], '%Y-%m-%d'),
+            DOB = datetime.strptime(data['DOB'], '%m/%d/%Y'),
             email = data["email"],
             phone = data["phone"],
             gender = data["gender"],
@@ -55,9 +55,8 @@ class Employee_list(Resource):
             active_status = data["active_status"],
             profile_picture = data["profile_picture"],
             nationality = data["nationality"],
-            date_joined = datetime.strptime(data['date_joined'], '%Y-%m-%d %H:%M:%S.%f'),
+            date_joined = datetime.strptime(data['date_joined'], '%m/%d/%Y'),
             marital_status = data["marital_status"],
-            emergency_contact = data["emergency_contact"],
             )
         # #after getting the image, get the image name(filename to store it in the server)
         # profile_picture = request.files['profile_picture']
@@ -115,6 +114,20 @@ class Employee_list(Resource):
             employee_id=new_employee.id) for d in dependants_data]
 
         db.session.add_all(new_dependants)
+
+
+        # If emergency_contacts are provided
+        if 'emergency_contacts' in data:
+            emergency_contacts_data = data['emergency_contacts']
+            new_emergency_contacts = [EmergencyContact(
+            first_name = data["emergency_contacts"]["first_name"],
+            last_name = data["emergency_contacts"]["last_name"],
+            gender = data["emergency_contacts"]["gender"],
+            relationship = data["emergency_contacts"]["relationship"], 
+            employee_id=new_employee.id) for d in emergency_contacts_data]
+
+        db.session.add_all(new_emergency_contacts)
+
         
         # If references are provided
         if 'references' in data:
