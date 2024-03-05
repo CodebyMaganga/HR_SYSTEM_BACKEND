@@ -1,14 +1,16 @@
 from flask_restful import Resource, reqparse
 from flask import make_response,jsonify ,request
 from flask_jwt_extended import jwt_required
+from datetime import datetime
 
 from models import db, Interview
 from schemas import InterviewSchema, interview_schema, interviews_schema
 
 class Interview_list(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('time', required=True, help="time is required")
+    parser.add_argument('--time', type=lambda x: datetime.strptime(x, '%m/%d/%Y'), required=True, help="Time in the format YYYY-MM-DD")
     parser.add_argument('applicant_id', required=True, help="applicant_id is required")
+
 
     def get(self):
         interviews = Interview.query.all()

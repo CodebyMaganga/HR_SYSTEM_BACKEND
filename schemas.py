@@ -1,4 +1,4 @@
-from models import Admin, Employee, Project, Dependant, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave, Department_employee, Project_employee, OnLeave_employee
+from models import Admin, Employee, Project, Dependant, EmergencyContact, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave, Department_employee, Project_employee, OnLeave_employee
 from flask_marshmallow import Marshmallow
 
 ma= Marshmallow()
@@ -41,6 +41,26 @@ class DependantSchema(ma.SQLAlchemyAutoSchema):
 
 dependant_schema = DependantSchema()
 dependants_schema = DependantSchema(many=True)
+
+class EmergencyContactSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model= EmergencyContact
+        load_instance = True
+        include_fk = True
+
+    employee = ma.Nested(lambda: EmployeeSchema, many = False, exclude = ('emergency_contacts',))    
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "emergencycontact_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("emergencycontact_list"),
+        }
+    )
+
+emergency_contact_schema = EmergencyContactSchema()
+emergency_contacts_schema = EmergencyContactSchema(many=True)
 
 class DocumentSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -158,7 +178,7 @@ class EmployeeSchema(ma.SQLAlchemyAutoSchema):
     references = ma.Nested(ReferenceSchema, many = True, exclude = ('employee',))
     documents = ma.Nested(DocumentSchema, many = True, exclude = ('employee',))
     bankdetails = ma.Nested(BankDetailSchema, many = True, exclude = ('employee',))
-
+    emergency_contacts = ma.Nested(EmergencyContactSchema, many = True, exclude = ('employee',))
     # department = ma.Nested( lambda: DepartmentSchema, exclude = ('department_employees',))
 
 
