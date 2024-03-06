@@ -22,7 +22,6 @@ from resources.employees import Employee_list, Employee_by_id
 from resources.interviews import Interview_list, Interview_by_id
 from resources.job_applicants import JobApplicant_list, JobApplicant_by_id
 from resources.leaves import Leave_list, Leave_by_id
-from resources.on_leave_employees import OnLeaveEmployee_list, OnLeaveEmployee_by_id
 from resources.project_employees import ProjectEmployee_list, Project_Employee_by_id
 from resources.projects import Project_list, Project_by_id
 from resources.references import Reference_list, Reference_by_id
@@ -92,9 +91,6 @@ api.add_resource(JobApplicant_by_id, '/job_applicants/<int:id>')
 
 api.add_resource(Leave_list, '/leaves')
 api.add_resource(Leave_by_id, '/leaves/<int:id>')
-
-api.add_resource(OnLeaveEmployee_list, '/on_leave_employees')
-api.add_resource(OnLeaveEmployee_by_id, '/on_leave_employees/<int:id>')
 
 api.add_resource(Project_list, '/projects')
 api.add_resource(Project_by_id, '/projects/<int:id>')

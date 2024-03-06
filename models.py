@@ -36,9 +36,9 @@ class Employee(db.Model):
     marital_status = db.Column(db.String, nullable=False)
     nationality = db.Column(db.String, nullable=False)
 
-    employee_leave = db.relationship('OnLeave_employee', backref='employee', uselist=False)
-    employee_department = db.relationship('Department_employee', backref='employee', uselist=False)
-    employee_project = db.relationship('Project_employee', backref='employee', uselist=False)
+    department = db.relationship('Department_employee', backref='employee', uselist=False)
+    project = db.relationship('Project_employee', backref='employee', uselist=False)
+    leave = db.relationship('Leave', backref='employee', uselist=False)
 
     dependants = db.relationship('Dependant', backref='employee')
     references = db.relationship('Reference', backref='employee')
@@ -135,14 +135,6 @@ class Leave(db.Model):
     leave_to =db.Column(db.DateTime, nullable=False)
     leave_type =db.Column(db.String, nullable=False)
     leave_letter =db.Column(db.String, nullable=False)
-    employee_on_leave = db.relationship('OnLeave_employee', backref='leave', uselist=False)
-
-
-class OnLeave_employee(db.Model):
-    __tablename__ = 'on_leave_employees'
-
-    id = db.Column(db.Integer, primary_key=True)    
-    leave_id = db.Column(db.Integer, db.ForeignKey('leaves.id'))
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
 

@@ -1,5 +1,5 @@
 from app import app
-from models import db, Admin, Employee, Project, Dependant, EmergencyContact, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave, Project_employee, Department_employee, OnLeave_employee
+from models import db, Admin, Employee, Project, Dependant, EmergencyContact, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave, Project_employee, Department_employee
 from datetime import datetime, timedelta
 
 with app.app_context():
@@ -191,15 +191,6 @@ with app.app_context():
     ]
     db.session.bulk_save_objects(department_employees)
 
-
-    employees_on_leave = [
-        OnLeave_employee(leave_id=1, employee_id=1),
-        OnLeave_employee(leave_id=2, employee_id=3),
-        OnLeave_employee(leave_id=3, employee_id=4),
-        OnLeave_employee(leave_id=4, employee_id=8),
-        OnLeave_employee(leave_id=5, employee_id=9),
-    ]
-    db.session.bulk_save_objects(employees_on_leave)
 
     db.session.commit()
 

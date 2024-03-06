@@ -45,7 +45,7 @@ class Employee_list(Resource):
         new_employee = Employee(
             first_name = data["first_name"] ,
             last_name = data["last_name"],
-            DOB = datetime.strptime(data['DOB'], '%m/%d/%Y'),
+            DOB = datetime.strptime(data['DOB'], '%Y-%m-%d'),
             email = data["email"],
             phone = data["phone"],
             gender = data["gender"],
@@ -55,7 +55,7 @@ class Employee_list(Resource):
             active_status = data["active_status"],
             profile_picture = data["profile_picture"],
             nationality = data["nationality"],
-            date_joined = datetime.strptime(data['date_joined'], '%m/%d/%Y'),
+            date_joined = datetime.strptime(data['date_joined'], '%Y-%m-%d'),
             marital_status = data["marital_status"],
             )
         # #after getting the image, get the image name(filename to store it in the server)

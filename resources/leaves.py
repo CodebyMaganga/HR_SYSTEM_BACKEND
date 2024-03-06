@@ -1,17 +1,18 @@
 from flask_restful import Resource, reqparse
 from flask import make_response,jsonify ,request
 from flask_jwt_extended import jwt_required
+from datetime import datetime
 
 from models import db, Leave
 from schemas import LeaveSchema, leave_schema, leaves_schema
 
 class Leave_list(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('leave_from', required=True, help="leave_from is required")
-    parser.add_argument('leave_to', required=True, help="leave_to is required")
+    parser.add_argument('leave_from', type=lambda x: datetime.strptime(x, '%Y-%m-%d'), required=True, help="leave_from is required")
+    parser.add_argument('leave_to', type=lambda x: datetime.strptime(x, '%Y-%m-%d'), required=True, help="leave_to is required")
     parser.add_argument('leave_type', required=True, help="leave_type is required")
     parser.add_argument('leave_letter', required=True, help="leave_letter is required")
-    parser.add_argument('employee_on_leave', required=True, help="employee_on_leave is required")
+    parser.add_argument('employee_id', required=True, help="employee_id is required")
 
     def get(self):
         leaves = Leave.query.all()
