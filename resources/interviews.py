@@ -8,7 +8,7 @@ from schemas import InterviewSchema, interview_schema, interviews_schema
 
 class Interview_list(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('--time', type=lambda x: datetime.strptime(x, '%m/%d/%Y'), required=True, help="Time in the format YYYY-MM-DD")
+    parser.add_argument('time', type=lambda x: datetime.strptime(x, '%Y-%m-%d'), required=True, help="Time in the format YYYY-MM-DD")
     parser.add_argument('applicant_id', required=True, help="applicant_id is required")
 
 

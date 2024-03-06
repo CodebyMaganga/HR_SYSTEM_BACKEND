@@ -1,4 +1,4 @@
-from models import Admin, Employee, Project, Dependant, EmergencyContact, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave, Department_employee, Project_employee, OnLeave_employee
+from models import Admin, Employee, Project, Dependant, EmergencyContact, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave
 from flask_marshmallow import Marshmallow
 
 ma= Marshmallow()
@@ -163,6 +163,27 @@ bankdetail_schema = BankDetailSchema()
 bankdetails_schema = BankDetailSchema(many=True)
 
 
+class LeaveSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model= Leave
+        load_instance = True
+
+    employee = ma.Nested(lambda: EmployeeSchema, many = False, exclude = ('leave',))
+
+    url = ma.Hyperlinks(
+        {
+            "self": ma.URLFor(
+                "leave_by_id",
+                values=dict(id="<id>")),
+            "collection": ma.URLFor("leave_list"),
+        }
+    )
+
+leave_schema = LeaveSchema()
+leaves_schema = LeaveSchema(many=True)
+
+
+
 class EmployeeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model= Employee
@@ -170,16 +191,15 @@ class EmployeeSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
 
     
-    employee_leave = ma.Nested(lambda: OnLeave_employeeSchema, many = False, exclude = ('employee',))
-    employee_department = ma.Nested(lambda: Department_employeeSchema, many = False, exclude = ('employee',))
-    employee_project = ma.Nested(lambda: Project_employeeSchema, many = False, exclude = ('employee',))
+    # department = ma.Nested(lambda: DepartmentSchema, many = False, exclude = ('department_employee',))
+    # project = ma.Nested(lambda: ProjectSchema, many = False, exclude = ('project_employee',))
     
+    leave = ma.Nested(LeaveSchema, many = False, exclude = ('employee',))
     dependants = ma.Nested(DependantSchema, many = True, exclude = ('employee',))
     references = ma.Nested(ReferenceSchema, many = True, exclude = ('employee',))
     documents = ma.Nested(DocumentSchema, many = True, exclude = ('employee',))
     bankdetails = ma.Nested(BankDetailSchema, many = True, exclude = ('employee',))
     emergency_contacts = ma.Nested(EmergencyContactSchema, many = True, exclude = ('employee',))
-    # department = ma.Nested( lambda: DepartmentSchema, exclude = ('department_employees',))
 
 
 
@@ -196,26 +216,26 @@ employee_schema = EmployeeSchema()
 employees_schema = EmployeeSchema(many=True)
 
 
-class Department_employeeSchema (ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model= Department_employee
-        include_fk = True
-        load_instance = True
+# class Department_employeeSchema (ma.SQLAlchemyAutoSchema):
+#     class Meta:
+#         model= Department_employee
+#         include_fk = True
+#         load_instance = True
 
-    employee = ma.Nested( EmployeeSchema)
-    # department = ma.Nested( lambda: DepartmentSchema, exclude = ('department_employees',))
+#     employee = ma.Nested( EmployeeSchema)
+#     # department = ma.Nested( lambda: DepartmentSchema, exclude = ('department_employees',))
 
-    url = ma.Hyperlinks(
-        {
-            "self": ma.URLFor(
-                "department_employee_by_id",
-                values=dict(id="<id>")),
-            "collection": ma.URLFor("department_employee_list"),
-        }
-    )
+#     url = ma.Hyperlinks(
+#         {
+#             "self": ma.URLFor(
+#                 "department_employee_by_id",
+#                 values=dict(id="<id>")),
+#             "collection": ma.URLFor("department_employee_list"),
+#         }
+#     )
 
-department_employee_schema = Department_employeeSchema()
-department_employees_schema = Department_employeeSchema(many=True)
+# department_employee_schema = Department_employeeSchema()
+# department_employees_schema = Department_employeeSchema(many=True)
 
 
 class DepartmentSchema(ma.SQLAlchemyAutoSchema):
@@ -223,7 +243,7 @@ class DepartmentSchema(ma.SQLAlchemyAutoSchema):
         model= Department
         load_instance = True
 
-    department_employees = ma.Nested(Department_employeeSchema, many = True)
+    department_employees = ma.Nested(EmployeeSchema, many = True)
 
     url = ma.Hyperlinks(
         {
@@ -238,26 +258,26 @@ department_schema = DepartmentSchema()
 departments_schema = DepartmentSchema(many=True)
 
 
-class Project_employeeSchema (ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model= Project_employee
-        include_fk = True
-        load_instance = True
+# class Project_employeeSchema (ma.SQLAlchemyAutoSchema):
+#     class Meta:
+#         model= Project_employee
+#         include_fk = True
+#         load_instance = True
 
-    employee = ma.Nested( EmployeeSchema)
-    # project = ma.Nested( lambda: ProjectSchema, exclude = ('project_employees',))
+#     employee = ma.Nested( EmployeeSchema)
+#     # project = ma.Nested( lambda: ProjectSchema, exclude = ('project_employees',))
 
-    url = ma.Hyperlinks(
-        {
-            "self": ma.URLFor(
-                "project_employee_by_id",
-                values=dict(id="<id>")),
-            "collection": ma.URLFor("projectemployee_list"),
-        }
-    )
+#     url = ma.Hyperlinks(
+#         {
+#             "self": ma.URLFor(
+#                 "project_employee_by_id",
+#                 values=dict(id="<id>")),
+#             "collection": ma.URLFor("projectemployee_list"),
+#         }
+#     )
 
-project_employee_schema = Project_employeeSchema()
-project_employees_schema = Project_employeeSchema(many=True)
+# project_employee_schema = Project_employeeSchema()
+# project_employees_schema = Project_employeeSchema(many=True)
 
 
 class ProjectSchema(ma.SQLAlchemyAutoSchema):
@@ -265,7 +285,7 @@ class ProjectSchema(ma.SQLAlchemyAutoSchema):
         model= Project
         load_instance = True
 
-    project_employees = ma.Nested(Project_employeeSchema, many = True)
+    project_employees = ma.Nested(EmployeeSchema, many = True)
 
     url = ma.Hyperlinks(
         {
@@ -280,43 +300,23 @@ project_schema = ProjectSchema()
 projects_schema = ProjectSchema(many=True)
 
 
-class OnLeave_employeeSchema (ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model= OnLeave_employee
-        include_fk = True
-        load_instance = True
+# class OnLeave_employeeSchema (ma.SQLAlchemyAutoSchema):
+#     class Meta:
+#         model= OnLeave_employee
+#         include_fk = True
+#         load_instance = True
 
-    employee = ma.Nested( EmployeeSchema)
-    # leave = ma.Nested( lambda: LeaveSchema, exclude = ('employees_on_leave',))
+#     employee = ma.Nested( EmployeeSchema)
+#     # leave = ma.Nested( lambda: LeaveSchema, exclude = ('employees_on_leave',))
 
-    url = ma.Hyperlinks(
-        {
-            "self": ma.URLFor(
-                "onleaveemployee_by_id",
-                values=dict(id="<id>")),
-            "collection": ma.URLFor("onleaveemployee_list"),
-        }
-    )
+#     url = ma.Hyperlinks(
+#         {
+#             "self": ma.URLFor(
+#                 "onleaveemployee_by_id",
+#                 values=dict(id="<id>")),
+#             "collection": ma.URLFor("onleaveemployee_list"),
+#         }
+#     )
 
-employee_on_leave_schema = OnLeave_employeeSchema()
-employees_on_leave_schema = OnLeave_employeeSchema(many=True)
-
-
-class LeaveSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model= Leave
-        load_instance = True
-
-    employees_on_leave = ma.Nested(OnLeave_employeeSchema, many = True)
-
-    url = ma.Hyperlinks(
-        {
-            "self": ma.URLFor(
-                "leave_by_id",
-                values=dict(id="<id>")),
-            "collection": ma.URLFor("leave_list"),
-        }
-    )
-
-leave_schema = LeaveSchema()
-leaves_schema = LeaveSchema(many=True)
+# employee_on_leave_schema = OnLeave_employeeSchema()
+# employees_on_leave_schema = OnLeave_employeeSchema(many=True)

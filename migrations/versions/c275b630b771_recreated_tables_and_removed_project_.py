@@ -1,8 +1,8 @@
-"""Recreating tables after adding emergency contact model
+"""Recreated tables and removed project_employee and department_employee models
 
-Revision ID: b647930be609
+Revision ID: c275b630b771
 Revises: 
-Create Date: 2024-03-06 00:06:03.781372
+Create Date: 2024-03-06 11:44:34.524849
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b647930be609'
+revision = 'c275b630b771'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -33,6 +33,25 @@ def upgrade():
     sa.Column('department_name', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('jobapplicants',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('first_name', sa.String(), nullable=False),
+    sa.Column('last_name', sa.String(), nullable=False),
+    sa.Column('photo', sa.String(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
+    sa.Column('address', sa.String(), nullable=False),
+    sa.Column('experience', sa.String(), nullable=False),
+    sa.Column('role_applied', sa.String(), nullable=False),
+    sa.Column('status', sa.String(), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email')
+    )
+    op.create_table('projects',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('title', sa.String(), nullable=False),
+    sa.Column('project_status', sa.String(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('employees',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(), nullable=False),
@@ -49,35 +68,19 @@ def upgrade():
     sa.Column('date_joined', sa.DateTime(), nullable=False),
     sa.Column('marital_status', sa.String(), nullable=False),
     sa.Column('nationality', sa.String(), nullable=False),
+    sa.Column('department_id', sa.Integer(), nullable=True),
+    sa.Column('project_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['department_id'], ['departments.id'], ),
+    sa.ForeignKeyConstraint(['project_id'], ['projects.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('phone')
     )
-    op.create_table('jobapplicants',
+    op.create_table('interviews',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('first_name', sa.String(), nullable=False),
-    sa.Column('last_name', sa.String(), nullable=False),
-    sa.Column('photo', sa.String(), nullable=False),
-    sa.Column('email', sa.String(), nullable=False),
-    sa.Column('address', sa.String(), nullable=False),
-    sa.Column('experience', sa.String(), nullable=False),
-    sa.Column('role_applied', sa.String(), nullable=False),
-    sa.Column('status', sa.String(), nullable=False),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email')
-    )
-    op.create_table('leaves',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('leave_from', sa.DateTime(), nullable=False),
-    sa.Column('leave_to', sa.DateTime(), nullable=False),
-    sa.Column('leave_type', sa.String(), nullable=False),
-    sa.Column('leave_letter', sa.String(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('projects',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('title', sa.String(), nullable=False),
-    sa.Column('project_status', sa.String(), nullable=False),
+    sa.Column('time', sa.DateTime(), nullable=False),
+    sa.Column('applicant_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['applicant_id'], ['jobapplicants.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('bankdetails',
@@ -87,14 +90,6 @@ def upgrade():
     sa.Column('employee_bank', sa.String(), nullable=False),
     sa.Column('branch_code', sa.String(), nullable=False),
     sa.Column('employee_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('department_employees',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('department_id', sa.Integer(), nullable=True),
-    sa.Column('employee_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['department_id'], ['departments.id'], ),
     sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -128,27 +123,14 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('phone')
     )
-    op.create_table('interviews',
+    op.create_table('leaves',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('time', sa.DateTime(), nullable=False),
-    sa.Column('applicant_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['applicant_id'], ['jobapplicants.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('on_leave_employees',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('leave_id', sa.Integer(), nullable=True),
+    sa.Column('leave_from', sa.DateTime(), nullable=False),
+    sa.Column('leave_to', sa.DateTime(), nullable=False),
+    sa.Column('leave_type', sa.String(), nullable=False),
+    sa.Column('leave_letter', sa.String(), nullable=False),
     sa.Column('employee_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
-    sa.ForeignKeyConstraint(['leave_id'], ['leaves.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('project_employees',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('project_id', sa.Integer(), nullable=True),
-    sa.Column('employee_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
-    sa.ForeignKeyConstraint(['project_id'], ['projects.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('references',
@@ -165,18 +147,15 @@ def upgrade():
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('references')
-    op.drop_table('project_employees')
-    op.drop_table('on_leave_employees')
-    op.drop_table('interviews')
+    op.drop_table('leaves')
     op.drop_table('emergency_contacts')
     op.drop_table('documents')
     op.drop_table('dependants')
-    op.drop_table('department_employees')
     op.drop_table('bankdetails')
-    op.drop_table('projects')
-    op.drop_table('leaves')
-    op.drop_table('jobapplicants')
+    op.drop_table('interviews')
     op.drop_table('employees')
+    op.drop_table('projects')
+    op.drop_table('jobapplicants')
     op.drop_table('departments')
     op.drop_table('admins')
     # ### end Alembic commands ###

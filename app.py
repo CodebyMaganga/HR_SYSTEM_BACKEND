@@ -8,12 +8,11 @@ from datetime import timedelta
 import os
 
 
-from models import db, Interview, Dependant, Department_employee
+from models import db, Interview, Dependant
 from schemas import ma
 
 from resources.admin import bcrypt,jwt,  Admin_Login, Admin_by_id, Admin_list
 from resources.bank_details import BankDetail_list, BankDetail_by_id
-from resources.department_employees import Department_employee_list, Department_employee_by_id
 from resources.departments import Department_list, Department_by_id
 from resources.dependants import Dependant_list, Dependant_by_id
 from resources.emergency_contacts import EmergencyContact_list, EmergencyContact_by_id
@@ -22,8 +21,6 @@ from resources.employees import Employee_list, Employee_by_id
 from resources.interviews import Interview_list, Interview_by_id
 from resources.job_applicants import JobApplicant_list, JobApplicant_by_id
 from resources.leaves import Leave_list, Leave_by_id
-from resources.on_leave_employees import OnLeaveEmployee_list, OnLeaveEmployee_by_id
-from resources.project_employees import ProjectEmployee_list, Project_Employee_by_id
 from resources.projects import Project_list, Project_by_id
 from resources.references import Reference_list, Reference_by_id
 
@@ -66,9 +63,6 @@ api.add_resource(Admin_Login, '/login')
 api.add_resource(BankDetail_list, '/bank_details')
 api.add_resource(BankDetail_by_id, '/bank_details/<int:id>')
 
-api.add_resource(Department_employee_list, '/department_employees')
-api.add_resource(Department_employee_by_id, '/department_employees/<int:id>')
-
 api.add_resource(Department_list, '/departments')
 api.add_resource(Department_by_id, '/departments/<int:id>')
 
@@ -93,14 +87,8 @@ api.add_resource(JobApplicant_by_id, '/job_applicants/<int:id>')
 api.add_resource(Leave_list, '/leaves')
 api.add_resource(Leave_by_id, '/leaves/<int:id>')
 
-api.add_resource(OnLeaveEmployee_list, '/on_leave_employees')
-api.add_resource(OnLeaveEmployee_by_id, '/on_leave_employees/<int:id>')
-
 api.add_resource(Project_list, '/projects')
 api.add_resource(Project_by_id, '/projects/<int:id>')
-
-api.add_resource(ProjectEmployee_list, '/project_employees')
-api.add_resource(Project_Employee_by_id, '/project_employees/<int:id>')
 
 api.add_resource(Reference_list, '/references')
 api.add_resource(Reference_by_id, '/references/<int:id>')
