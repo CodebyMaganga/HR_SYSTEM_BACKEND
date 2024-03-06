@@ -23,6 +23,7 @@ from resources.job_applicants import JobApplicant_list, JobApplicant_by_id
 from resources.leaves import Leave_list, Leave_by_id
 from resources.projects import Project_list, Project_by_id
 from resources.references import Reference_list, Reference_by_id
+from resources.company_properties import CompanyProperty_list, CompanyProperty_by_id
 
 
 app = Flask(__name__)
@@ -68,6 +69,9 @@ api.add_resource(Department_by_id, '/departments/<int:id>')
 
 api.add_resource(Dependant_list, '/dependants')
 api.add_resource(Dependant_by_id, '/dependants/<int:id>')
+
+api.add_resource(CompanyProperty_list, '/company_properties')
+api.add_resource(CompanyProperty_by_id, '/company_properties/<int:id>')
 
 api.add_resource(EmergencyContact_list, '/emergency_contacts')
 api.add_resource(EmergencyContact_by_id, '/emergency_contacts/<int:id>')

@@ -1,8 +1,8 @@
-"""Recreated tables and removed project_employee and department_employee models
+"""Recreated tables and added company_properties table
 
-Revision ID: c275b630b771
+Revision ID: d2378804a7c8
 Revises: 
-Create Date: 2024-03-06 11:44:34.524849
+Create Date: 2024-03-06 13:25:31.897011
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c275b630b771'
+revision = 'd2378804a7c8'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -63,7 +63,7 @@ def upgrade():
     sa.Column('phone', sa.String(), nullable=False),
     sa.Column('address', sa.VARCHAR(), nullable=False),
     sa.Column('role', sa.String(), nullable=False),
-    sa.Column('active_status', sa.Boolean(), nullable=False),
+    sa.Column('active_status', sa.String(), nullable=False),
     sa.Column('profile_picture', sa.VARCHAR(), nullable=False),
     sa.Column('date_joined', sa.DateTime(), nullable=False),
     sa.Column('marital_status', sa.String(), nullable=False),
@@ -93,6 +93,18 @@ def upgrade():
     sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('companyproperties',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('category', sa.String(), nullable=False),
+    sa.Column('brand', sa.String(), nullable=False),
+    sa.Column('description', sa.String(), nullable=False),
+    sa.Column('condition', sa.String(), nullable=False),
+    sa.Column('serial_number', sa.String(), nullable=False),
+    sa.Column('employee_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('serial_number')
+    )
     op.create_table('dependants',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(), nullable=False),
@@ -106,7 +118,7 @@ def upgrade():
     )
     op.create_table('documents',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('document_type', sa.String(), nullable=False),
+    sa.Column('document_type', sa.VARCHAR(), nullable=False),
     sa.Column('employee_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -151,6 +163,7 @@ def downgrade():
     op.drop_table('emergency_contacts')
     op.drop_table('documents')
     op.drop_table('dependants')
+    op.drop_table('companyproperties')
     op.drop_table('bankdetails')
     op.drop_table('interviews')
     op.drop_table('employees')

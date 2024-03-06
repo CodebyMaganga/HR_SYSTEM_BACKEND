@@ -30,7 +30,7 @@ class Employee(db.Model):
     phone = db.Column(db.String, unique = True,nullable=False)
     address = db.Column(db.VARCHAR, nullable=False)
     role = db.Column(db.String, nullable=False)
-    active_status = db.Column(db.Boolean, nullable=False)
+    active_status = db.Column(db.String, nullable=False)
     profile_picture = db.Column(db.VARCHAR, nullable=False)
     date_joined = db.Column(db.DateTime, nullable=False)
     marital_status = db.Column(db.String, nullable=False)
@@ -46,7 +46,7 @@ class Employee(db.Model):
     documents = db.relationship('Document', backref='employee')
     bankdetails = db.relationship('BankDetail', backref='employee')
     emergency_contacts = db.relationship('EmergencyContact', backref='employee')
-
+    company_properties = db.relationship('CompanyProperty', backref='employee')
 
 
 
@@ -96,19 +96,26 @@ class BankDetail(db.Model):
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
 
+class CompanyProperty(db.Model):
+    __tablename__ = 'companyproperties'
+
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String, nullable=False)
+    brand = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=False)
+    condition = db.Column(db.String, nullable=False)
+    serial_number = db.Column(db.String, nullable=False, unique = True)
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+
+
+
+
 class Department(db.Model):
     __tablename__ = 'departments'
 
     id = db.Column(db.Integer, primary_key=True)
     department_name = db.Column(db.String, nullable=False)
     department_employees = db.relationship('Employee', backref='department')
-
-# class Department_employee(db.Model):
-#     __tablename__ = 'department_employees'
-
-#     id = db.Column(db.Integer, primary_key=True)    
-#     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
-#     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
 
 class Project(db.Model):
@@ -118,14 +125,6 @@ class Project(db.Model):
     title = db.Column(db.String, nullable=False)
     project_status = db.Column(db.String, nullable=False)
     project_employees = db.relationship('Employee', backref='project')
-
-
-# class Project_employee(db.Model):
-#     __tablename__ = 'project_employees'
-
-#     id = db.Column(db.Integer, primary_key=True)    
-#     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
-#     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
 
 class Leave(db.Model):
