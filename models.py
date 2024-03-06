@@ -36,8 +36,9 @@ class Employee(db.Model):
     marital_status = db.Column(db.String, nullable=False)
     nationality = db.Column(db.String, nullable=False)
 
-    department = db.relationship('Department_employee', backref='employee', uselist=False)
-    project = db.relationship('Project_employee', backref='employee', uselist=False)
+    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    
     leave = db.relationship('Leave', backref='employee', uselist=False)
 
     dependants = db.relationship('Dependant', backref='employee')
@@ -100,14 +101,14 @@ class Department(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     department_name = db.Column(db.String, nullable=False)
-    department_employees = db.relationship('Department_employee', backref='department')
+    department_employees = db.relationship('Employee', backref='department')
 
-class Department_employee(db.Model):
-    __tablename__ = 'department_employees'
+# class Department_employee(db.Model):
+#     __tablename__ = 'department_employees'
 
-    id = db.Column(db.Integer, primary_key=True)    
-    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
-    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+#     id = db.Column(db.Integer, primary_key=True)    
+#     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
+#     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
 
 class Project(db.Model):
@@ -116,15 +117,15 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     project_status = db.Column(db.String, nullable=False)
-    project_employees = db.relationship('Project_employee', backref='project')
+    project_employees = db.relationship('Employee', backref='project')
 
 
-class Project_employee(db.Model):
-    __tablename__ = 'project_employees'
+# class Project_employee(db.Model):
+#     __tablename__ = 'project_employees'
 
-    id = db.Column(db.Integer, primary_key=True)    
-    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
-    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+#     id = db.Column(db.Integer, primary_key=True)    
+#     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
+#     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
 
 class Leave(db.Model):
