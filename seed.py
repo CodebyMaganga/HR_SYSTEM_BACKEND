@@ -128,11 +128,11 @@ with app.app_context():
 
     # Leaves
     leaves = [
-        Leave(leave_from=datetime.now(), leave_to=datetime.now() + timedelta(days=10), leave_type="Annual", leave_letter="path/to/letter1.jpg"),
-        Leave(leave_from=datetime.now(), leave_to=datetime.now() + timedelta(days=5), leave_type="Sick", leave_letter="path/to/letter2.jpg"),
-        Leave(leave_from=datetime.now(), leave_to=datetime.now() + timedelta(days=10), leave_type="Annual", leave_letter="path/to/letter1.jpg",),
-        Leave(leave_from=datetime.now(), leave_to=datetime.now() + timedelta(days=5), leave_type="Sick", leave_letter="path/to/letter2.jpg",),
-        Leave(leave_from=datetime.now(), leave_to=datetime.now() + timedelta(days=7), leave_type="Annual", leave_letter="path/to/letter6.jpg")
+        Leave(leave_from=datetime.now(), leave_to=datetime.now() + timedelta(days=10), leave_type="Annual", leave_letter="path/to/letter1.jpg", employee_id = 1),
+        Leave(leave_from=datetime.now(), leave_to=datetime.now() + timedelta(days=5), leave_type="Sick", leave_letter="path/to/letter2.jpg", employee_id = 3),
+        Leave(leave_from=datetime.now(), leave_to=datetime.now() + timedelta(days=10), leave_type="Annual", leave_letter="path/to/letter1.jpg", employee_id = 6),
+        Leave(leave_from=datetime.now(), leave_to=datetime.now() + timedelta(days=5), leave_type="Sick", leave_letter="path/to/letter2.jpg", employee_id = 7),
+        Leave(leave_from=datetime.now(), leave_to=datetime.now() + timedelta(days=7), leave_type="Annual", leave_letter="path/to/letter6.jpg" , employee_id = 4)
     ]
     db.session.bulk_save_objects(leaves)
 
