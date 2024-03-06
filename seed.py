@@ -1,5 +1,5 @@
 from app import app
-from models import db, Admin, Employee, Project, Dependant, EmergencyContact, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave
+from models import db, Admin, Employee, Project, Dependant, EmergencyContact, Document, Reference, JobApplicant, Interview, Department, BankDetail, Leave, CompanyProperty
 from datetime import datetime, timedelta
 
 with app.app_context():
@@ -15,16 +15,16 @@ with app.app_context():
 
     # Employees
     employees = [
-        Employee(first_name="John", last_name="Doe", national_ID="123456", gender="Male", DOB=datetime.strptime("01/01/1990", "%m/%d/%Y"), email="john@example.com", phone="555-0001", address="123 Main St", role="Engineer", active_status=True, profile_picture="path/to/picture1.jpg", date_joined=datetime.now(), marital_status="Single", nationality="Country1", department_id = 1, project_id = 1),
-        Employee(first_name="Jane", last_name="Smith", national_ID="123457", gender="Female", DOB=datetime.strptime("02/02/1991", "%m/%d/%Y"), email="jane@example.com", phone="555-0002", address="456 Side St", role="HR Manager", active_status=True, profile_picture="path/to/picture2.jpg", date_joined=datetime.now(), marital_status="Married", nationality="Country2", department_id = 2, project_id = 2),
-        Employee(first_name="Alice", last_name="Johnson", national_ID="345678", gender="Female", DOB=datetime.strptime("03/03/1998", "%m/%d/%Y"), email="alice.johnson@example.com", phone="555-0003", address="789 Third St", role="Project Manager", active_status=True, profile_picture="path/to/alice.jpg", date_joined=datetime.now(), marital_status="Single", nationality="Country3", department_id = 3, project_id = 3),
-        Employee(first_name="Bob", last_name="Brown", national_ID="456789", gender="Male", DOB=datetime.strptime("04/04/1992", "%m/%d/%Y"), email="bob.brown@example.com", phone="555-0004", address="101 Fourth St", role="Developer", active_status=True, profile_picture="path/to/bob.jpg", date_joined=datetime.now(), marital_status="Married", nationality="Country4", department_id = 4, project_id = 4),
-        Employee(first_name="Carol", last_name="Davis", national_ID="567890", gender="Female", DOB=datetime.strptime("05/05/1991", "%m/%d/%Y"), email="carol.davis@example.com", phone="555-0005", address="202 Fifth St", role="Designer", active_status=True, profile_picture="path/to/carol.jpg", date_joined=datetime.now(), marital_status="Married", nationality="Country5", department_id = 5, project_id = 5),
-        Employee(first_name="David", last_name="Wilson", national_ID="678901", gender="Male", DOB=datetime.strptime("06/06/1987", "%m/%d/%Y"), email="david.wilson@example.com", phone="555-0006", address="303 Sixth St", role="HR", active_status=True, profile_picture="path/to/david.jpg", date_joined=datetime.now(), marital_status="Single", nationality="Country6", department_id = 5, project_id = 6),
-        Employee(first_name="Eva", last_name="Martin", national_ID="789012", gender="Female", DOB=datetime.strptime("07/07/1993", "%m/%d/%Y"), email="eva.martin@example.com", phone="555-0007", address="404 Seventh St", role="Accountant", active_status=True, profile_picture="path/to/eva.jpg", date_joined=datetime.now(), marital_status="Married", nationality="Country7", department_id = 4, project_id = 7),
-        Employee(first_name="Frank", last_name="Garcia", national_ID="890123", gender="Male", DOB=datetime.strptime("08/08/1986", "%m/%d/%Y"), email="frank.garcia@example.com", phone="555-0008", address="505 Eighth St", role="Technician", active_status=True, profile_picture="path/to/frank.jpg", date_joined=datetime.now(), marital_status="Single", nationality="Country8", department_id = 3, project_id = 8),
-        Employee(first_name="Grace", last_name="Lee", national_ID="901234", gender="Female", DOB=datetime.strptime("09/09/1989", "%m/%d/%Y"), email="grace.lee@example.com", phone="555-0009", address="606 Ninth St", role="Sales", active_status=True, profile_picture="path/to/grace.jpg", date_joined=datetime.now(), marital_status="Married", nationality="Country9", department_id = 2, project_id = 9),
-        Employee(first_name="Henry", last_name="Taylor", national_ID="012345", gender="Male", DOB=datetime.strptime("10/10/1994", "%m/%d/%Y"), email="henry.taylor@example.com", phone="555-0010", address="707 Tenth St", role="Marketing", active_status=True, profile_picture="path/to/henry.jpg", date_joined=datetime.now(), marital_status="Single", nationality="Country10", department_id = 1, project_id = 10)
+        Employee(first_name="John", last_name="Doe", national_ID="123456", gender="Male", DOB=datetime.strptime("01/01/1990", "%m/%d/%Y"), email="john@example.com", phone="555-0001", address="123 Main St", role="Engineer", active_status= "Active", profile_picture="path/to/picture1.jpg", date_joined=datetime.now(), marital_status="Single", nationality="Country1", department_id = 1, project_id = 1),
+        Employee(first_name="Jane", last_name="Smith", national_ID="123457", gender="Female", DOB=datetime.strptime("02/02/1991", "%m/%d/%Y"), email="jane@example.com", phone="555-0002", address="456 Side St", role="HR Manager", active_status= "Active", profile_picture="path/to/picture2.jpg", date_joined=datetime.now(), marital_status="Married", nationality="Country2", department_id = 2, project_id = 2),
+        Employee(first_name="Alice", last_name="Johnson", national_ID="345678", gender="Female", DOB=datetime.strptime("03/03/1998", "%m/%d/%Y"), email="alice.johnson@example.com", phone="555-0003", address="789 Third St", role="Project Manager", active_status= "Active", profile_picture="path/to/alice.jpg", date_joined=datetime.now(), marital_status="Single", nationality="Country3", department_id = 3, project_id = 3),
+        Employee(first_name="Bob", last_name="Brown", national_ID="456789", gender="Male", DOB=datetime.strptime("04/04/1992", "%m/%d/%Y"), email="bob.brown@example.com", phone="555-0004", address="101 Fourth St", role="Developer", active_status= "Active", profile_picture="path/to/bob.jpg", date_joined=datetime.now(), marital_status="Married", nationality="Country4", department_id = 4, project_id = 4),
+        Employee(first_name="Carol", last_name="Davis", national_ID="567890", gender="Female", DOB=datetime.strptime("05/05/1991", "%m/%d/%Y"), email="carol.davis@example.com", phone="555-0005", address="202 Fifth St", role="Designer", active_status= "Active", profile_picture="path/to/carol.jpg", date_joined=datetime.now(), marital_status="Married", nationality="Country5", department_id = 5, project_id = 5),
+        Employee(first_name="David", last_name="Wilson", national_ID="678901", gender="Male", DOB=datetime.strptime("06/06/1987", "%m/%d/%Y"), email="david.wilson@example.com", phone="555-0006", address="303 Sixth St", role="HR", active_status= "Active", profile_picture="path/to/david.jpg", date_joined=datetime.now(), marital_status="Single", nationality="Country6", department_id = 5, project_id = 6),
+        Employee(first_name="Eva", last_name="Martin", national_ID="789012", gender="Female", DOB=datetime.strptime("07/07/1993", "%m/%d/%Y"), email="eva.martin@example.com", phone="555-0007", address="404 Seventh St", role="Accountant", active_status= "Active", profile_picture="path/to/eva.jpg", date_joined=datetime.now(), marital_status="Married", nationality="Country7", department_id = 4, project_id = 7),
+        Employee(first_name="Frank", last_name="Garcia", national_ID="890123", gender="Male", DOB=datetime.strptime("08/08/1986", "%m/%d/%Y"), email="frank.garcia@example.com", phone="555-0008", address="505 Eighth St", role="Technician", active_status= "Active", profile_picture="path/to/frank.jpg", date_joined=datetime.now(), marital_status="Single", nationality="Country8", department_id = 3, project_id = 8),
+        Employee(first_name="Grace", last_name="Lee", national_ID="901234", gender="Female", DOB=datetime.strptime("09/09/1989", "%m/%d/%Y"), email="grace.lee@example.com", phone="555-0009", address="606 Ninth St", role="Sales", active_status= "Active", profile_picture="path/to/grace.jpg", date_joined=datetime.now(), marital_status="Married", nationality="Country9", department_id = 2, project_id = 9),
+        Employee(first_name="Henry", last_name="Taylor", national_ID="012345", gender="Male", DOB=datetime.strptime("10/10/1994", "%m/%d/%Y"), email="henry.taylor@example.com", phone="555-0010", address="707 Tenth St", role="Marketing", active_status= "Active", profile_picture="path/to/henry.jpg", date_joined=datetime.now(), marital_status="Single", nationality="Country10", department_id = 1, project_id = 10)
     ]
     db.session.bulk_save_objects(employees)
 
@@ -92,6 +92,23 @@ with app.app_context():
         BankDetail(employee_salary="73000", employee_account="ACC123465", employee_bank="Bank10", branch_code="BR010", employee_id=10)
     ]
     db.session.bulk_save_objects(bank_details)
+
+
+
+        # CompanyProperty
+    company_properties = [
+        CompanyProperty(category="Laptop", brand="HP", description="Black, touch screen", condition="New",serial_number = "0001", employee_id=1),
+        CompanyProperty(category="Laptop", brand="Dell", description="Latitude 7420, Intel Core i5", condition="New", serial_number="0040", employee_id=2),
+        CompanyProperty(category="Phone", brand="Samsung", description="Galaxy S21 Ultra, 512GB", condition="New", serial_number="0041", employee_id=3),
+        CompanyProperty(category="Vehicle", brand="Ford", description="School Bus, Yellow color", condition="Used", serial_number="0042", employee_id=4),
+        CompanyProperty(category="Classroom Furniture", brand="Virco", description="Student Desk and Chair Set", condition="New", serial_number="0043", employee_id=5),
+        CompanyProperty(category="Computer", brand="Apple", description="MacBook Air, 13-inch, M1 Chip", condition="New", serial_number="0044", employee_id=6),
+        CompanyProperty(category="Interactive Whiteboard", brand="Promethean", description="ActivPanel Titanium, 75-inch", condition="New", serial_number="0045", employee_id=7),
+        CompanyProperty(category="Microscope", brand="Omano", description="OM118-M3 LED Binocular Compound Microscope", condition="New", serial_number="0047", employee_id=8),
+        CompanyProperty(category="Library Books", brand="Various", description="Assorted collection of fiction and non-fiction books", condition="New", serial_number="0048", employee_id=9),
+        CompanyProperty(category="Sports Equipment", brand="Spalding", description="Basketball", condition="New", serial_number="0049", employee_id=10)
+    ]
+    db.session.bulk_save_objects(company_properties)
 
 
     # Projects
