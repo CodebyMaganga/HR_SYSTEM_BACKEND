@@ -30,22 +30,23 @@ class Employee(db.Model):
     phone = db.Column(db.String, unique = True,nullable=False)
     address = db.Column(db.VARCHAR, nullable=False)
     role = db.Column(db.String, nullable=False)
-    active_status = db.Column(db.Boolean, nullable=False)
+    active_status = db.Column(db.String, nullable=False)
     profile_picture = db.Column(db.VARCHAR, nullable=False)
     date_joined = db.Column(db.DateTime, nullable=False)
     marital_status = db.Column(db.String, nullable=False)
     nationality = db.Column(db.String, nullable=False)
 
-    employee_leave = db.relationship('OnLeave_employee', backref='employee', uselist=False)
-    employee_department = db.relationship('Department_employee', backref='employee', uselist=False)
-    employee_project = db.relationship('Project_employee', backref='employee', uselist=False)
+    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    
+    leave = db.relationship('Leave', backref='employee', uselist=False)
 
     dependants = db.relationship('Dependant', backref='employee')
     references = db.relationship('Reference', backref='employee')
     documents = db.relationship('Document', backref='employee')
     bankdetails = db.relationship('BankDetail', backref='employee')
     emergency_contacts = db.relationship('EmergencyContact', backref='employee')
-
+    company_properties = db.relationship('CompanyProperty', backref='employee')
 
 
 
@@ -95,19 +96,26 @@ class BankDetail(db.Model):
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
 
+class CompanyProperty(db.Model):
+    __tablename__ = 'companyproperties'
+
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String, nullable=False)
+    brand = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=False)
+    condition = db.Column(db.String, nullable=False)
+    serial_number = db.Column(db.String, nullable=False, unique = True)
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+
+
+
+
 class Department(db.Model):
     __tablename__ = 'departments'
 
     id = db.Column(db.Integer, primary_key=True)
     department_name = db.Column(db.String, nullable=False)
-    department_employees = db.relationship('Department_employee', backref='department')
-
-class Department_employee(db.Model):
-    __tablename__ = 'department_employees'
-
-    id = db.Column(db.Integer, primary_key=True)    
-    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
-    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+    department_employees = db.relationship('Employee', backref='department')
 
 
 class Project(db.Model):
@@ -116,15 +124,7 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     project_status = db.Column(db.String, nullable=False)
-    project_employees = db.relationship('Project_employee', backref='project')
-
-
-class Project_employee(db.Model):
-    __tablename__ = 'project_employees'
-
-    id = db.Column(db.Integer, primary_key=True)    
-    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
-    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+    project_employees = db.relationship('Employee', backref='project')
 
 
 class Leave(db.Model):
@@ -135,14 +135,6 @@ class Leave(db.Model):
     leave_to =db.Column(db.DateTime, nullable=False)
     leave_type =db.Column(db.String, nullable=False)
     leave_letter =db.Column(db.String, nullable=False)
-    employee_on_leave = db.relationship('OnLeave_employee', backref='leave', uselist=False)
-
-
-class OnLeave_employee(db.Model):
-    __tablename__ = 'on_leave_employees'
-
-    id = db.Column(db.Integer, primary_key=True)    
-    leave_id = db.Column(db.Integer, db.ForeignKey('leaves.id'))
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
 
 
