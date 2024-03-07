@@ -1,8 +1,8 @@
-"""Recreated tables and added company_properties table
+"""Recreated tables and removed unique constraint from emergency_contacts
 
-Revision ID: d2378804a7c8
+Revision ID: 0191a3d46ac1
 Revises: 
-Create Date: 2024-03-06 13:25:31.897011
+Create Date: 2024-03-07 22:46:17.450963
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'd2378804a7c8'
+revision = '0191a3d46ac1'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -118,7 +118,7 @@ def upgrade():
     )
     op.create_table('documents',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('document_type', sa.VARCHAR(), nullable=False),
+    sa.Column('document_type', sa.String(), nullable=False),
     sa.Column('employee_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -132,8 +132,7 @@ def upgrade():
     sa.Column('phone', sa.String(), nullable=False),
     sa.Column('employee_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('phone')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('leaves',
     sa.Column('id', sa.Integer(), nullable=False),

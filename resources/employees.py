@@ -123,6 +123,7 @@ class Employee_list(Resource):
             first_name = data["emergency_contacts"]["first_name"],
             last_name = data["emergency_contacts"]["last_name"],
             gender = data["emergency_contacts"]["gender"],
+            phone = data["emergency_contacts"]["phone"],
             relationship = data["emergency_contacts"]["relationship"], 
             employee_id=new_employee.id) for d in emergency_contacts_data]
 
@@ -148,18 +149,20 @@ class Employee_list(Resource):
             
         db.session.add_all(new_documents)
         #company property details
+        global new_company_property
         if 'company_properties' in data:
-            company_properties_data = data ['company_properties']
+            company_properties_data = data['company_properties']
             new_company_properties = [CompanyProperty(
-                category = data ['company_properties']['category'],
-                brand = data ['company_properties'] ['brand'],
-                description = data ['company_properties'] ['description'],
-                condition = data ['company_properties'] ['condition'],
-                serial_number = data ['company_properties'] ['serial_number'],
+                category = data['company_properties']['category'],
+                brand = data['company_properties']['brand'],
+                description = data['company_properties']['description'],
+                condition = data['company_properties']['condition'],
+                serial_number = data['company_properties']['serial_number'],
                 employee_id=new_employee.id) for r in company_properties_data]
+            print(new_company_property)
            
 
-        db.session.add_all(new_company_properties)
+            db.session.add_all(new_company_properties)
 
         db.session.commit()
 
@@ -240,6 +243,7 @@ class Employee_by_id(Resource):
         dependants = Dependant.query.filter_by(employee_id = id)
         references = Reference.query.filter_by(employee_id = id)
         documents = Document.query.filter_by(employee_id = id)
+        emergency_contacts =  EmergencyContact.query.filter_by(employee_id = id)
 
         for bankdetail in bankdetails:
             db.session.delete(bankdetail)
@@ -252,6 +256,9 @@ class Employee_by_id(Resource):
 
         for document in documents:
             db.session.delete(document)
+
+        for emergency_contact in emergency_contacts:
+            db.session.delete(emergency_contact)
 
         db.session.delete(employee)
         db.session.commit()
