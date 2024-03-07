@@ -1,8 +1,8 @@
-"""Recreating tables after adding emergency contact model
+"""recreate tables
 
-Revision ID: b647930be609
+Revision ID: a4db8504dbc1
 Revises: 
-Create Date: 2024-03-06 00:06:03.781372
+Create Date: 2024-03-07 09:57:50.009250
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b647930be609'
+revision = 'a4db8504dbc1'
 down_revision = None
 branch_labels = None
 depends_on = None
