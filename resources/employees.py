@@ -7,7 +7,7 @@ import os
 from flask_jwt_extended import jwt_required
 from datetime import datetime
 
-from models import db, Employee, BankDetail, Dependant, EmergencyContact, Reference, Document
+from models import db, Employee, BankDetail, Dependant, EmergencyContact, Reference, Document,CompanyProperty
 from schemas import EmployeeSchema, employee_schema, employees_schema
 
 
@@ -147,6 +147,19 @@ class Employee_list(Resource):
                 employee_id=new_employee.id) for d in documents_data]
             
         db.session.add_all(new_documents)
+        #company property details
+        if 'company_properties' in data:
+            company_properties_data = data ['company_properties']
+            new_company_properties = [CompanyProperty(
+                category = data ['company_properties']['category'],
+                brand = data ['company_properties'] ['brand'],
+                description = data ['company_properties'] ['description'],
+                condition = data ['company_properties'] ['condition'],
+                serial_number = data ['company_properties'] ['serial_number'],
+                employee_id=new_employee.id) for r in company_properties_data]
+           
+
+        db.session.add_all(new_company_properties)
 
         db.session.commit()
 

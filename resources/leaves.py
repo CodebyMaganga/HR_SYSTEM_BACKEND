@@ -1,7 +1,10 @@
 from flask_restful import Resource, reqparse
-from flask import make_response,jsonify ,request
+from flask import make_response, jsonify, request
 from flask_jwt_extended import jwt_required
 from datetime import datetime
+from flask import current_app
+from flask import current_app
+from sqlalchemy.exc import SQLAlchemyError
 
 from models import db, Leave
 from schemas import LeaveSchema, leave_schema, leaves_schema
@@ -14,6 +17,7 @@ class Leave_list(Resource):
     parser.add_argument('leave_letter', required=True, help="leave_letter is required")
     parser.add_argument('employee_id', required=True, help="employee_id is required")
 
+
     def get(self):
         leaves = Leave.query.all()
 
@@ -25,19 +29,42 @@ class Leave_list(Resource):
         return response
     
     def post(self):
-        data = Leave_list.parser.parse_args()
-        new_leave = Leave(**data)
+        try:
+            args = self.parser.parse_args()
+            new_leave = Leave(**args)  # Create a new Leave object with parsed arguments
 
-        db.session.add(new_leave)
-        db.session.commit()
+            db.session.add(new_leave)
+            db.session.commit()
 
-        response = make_response(
-            leave_schema.dump(new_leave),
-            201
-        )
+            response = make_response(
+                leave_schema.dump(new_leave),
+                201
+            )
+            return response
 
-        return response
-    
+        except SQLAlchemyError as e:
+            current_app.logger.error(f"Database error adding leave: {str(e)}")
+            response_body = {
+                "error": "Failed to add leave",
+                "message": "Database error"
+            }
+            response = make_response(
+                jsonify(response_body),
+                500
+            )
+            return response
+
+        except Exception as e:
+            current_app.logger.error(f"Error adding leave: {str(e)}")
+            response_body = {
+                "error": "Failed to add leave",
+                "message": str(e)
+            }
+            response = make_response(
+                jsonify(response_body),
+                500
+            )
+            return response
 class Leave_by_id(Resource):
     def get(self, id):
         leave = Leave.query.filter_by(id=id).first()
