@@ -159,7 +159,6 @@ class Employee_list(Resource):
                 condition = data['company_properties']['condition'],
                 serial_number = data['company_properties']['serial_number'],
                 employee_id=new_employee.id) for r in company_properties_data]
-            print(new_company_property)
            
 
             db.session.add_all(new_company_properties)
