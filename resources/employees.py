@@ -1,9 +1,13 @@
 from flask_restful import Resource, reqparse
 from flask import make_response,jsonify ,request
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
+#from app import app
 from flask_jwt_extended import jwt_required
 from datetime import datetime
 
-from models import db, Employee, BankDetail, Dependant, Reference, Document
+from models import db, Employee, BankDetail, Dependant, EmergencyContact, Reference, Document
 from schemas import EmployeeSchema, employee_schema, employees_schema
 
 
@@ -18,13 +22,30 @@ class Employee_list(Resource):
 
         return response
     
+    # #a post function to allow uploading an image or file
+    # def upload_file():
+    #     #get access to the actual picture
+    #     profile_picture = request.files['profile_picture']#profile_picture is the name in the input field on the front end
+    #     #if the user has then uploaded a file or image without the name given above; the below function checks that
+    #     if not profile_picture:
+    #         return "No profile picture uploaded", 400
+        
+    #     #after getting the image, get the image name and its file.to get file names securely, import secure_filename
+    #     filename = secure_filename(profile_picture.filename)
+
+    #     employee= Employee(profile_picture=profile_picture.read())
+    #     db.session.add(employee)
+    #     db.session.commit()
+
+    #     return "Profile picture has been uploaded!", 200
+
     def post(self):
         data = request.get_json()
         # Create new employee
         new_employee = Employee(
             first_name = data["first_name"] ,
             last_name = data["last_name"],
-            DOB = datetime.strptime(data['DOB'], '%Y-%m-%d'),
+            DOB = datetime.strptime(data['DOB'], '%m/%d/%Y'),
             email = data["email"],
             phone = data["phone"],
             gender = data["gender"],
@@ -34,13 +55,38 @@ class Employee_list(Resource):
             active_status = data["active_status"],
             profile_picture = data["profile_picture"],
             nationality = data["nationality"],
-            date_joined = datetime.strptime(data['date_joined'], '%Y-%m-%d %H:%M:%S.%f'),
+            date_joined = datetime.strptime(data['date_joined'], '%m/%d/%Y'),
             marital_status = data["marital_status"],
-            emergency_contact = data["emergency_contact"],
             )
+        # #after getting the image, get the image name(filename to store it in the server)
+        # profile_picture = request.files['profile_picture']
+        # pic_filename = secure_filename(profile_picture.filename)
+
+        # #when users upload same image with same name; randomize the nme with uuid
+        # pic_name = str(uuid.uuid1()) + "_" + pic_filename
+
+        #  #save the image
+        # saver= data["profile_picture"]
+        
+        # #change it to a string to save to db
+        # profile_picture = pic_name
+
+        # Handle file upload
+        profile_picture = request.files.get('profile_picture')
+        if profile_picture:
+            # Generate a unique filename
+            filename = secure_filename(profile_picture.filename)
+            pic_name = str(uuid.uuid1()) + "_" + filename
+            # Save the image to the upload folder
+            profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+            # Save the filename to the new employee record
+            new_employee.profile_picture = pic_name
+    
+
 
         db.session.add(new_employee)
         db.session.commit()
+        #saver.save(os.path.join(app.config['UPLOAD_FOLDER']),pic_name)
 
 
         # If bank details are provided
@@ -68,6 +114,20 @@ class Employee_list(Resource):
             employee_id=new_employee.id) for d in dependants_data]
 
         db.session.add_all(new_dependants)
+
+
+        # If emergency_contacts are provided
+        if 'emergency_contacts' in data:
+            emergency_contacts_data = data['emergency_contacts']
+            new_emergency_contacts = [EmergencyContact(
+            first_name = data["emergency_contacts"]["first_name"],
+            last_name = data["emergency_contacts"]["last_name"],
+            gender = data["emergency_contacts"]["gender"],
+            relationship = data["emergency_contacts"]["relationship"], 
+            employee_id=new_employee.id) for d in emergency_contacts_data]
+
+        db.session.add_all(new_emergency_contacts)
+
         
         # If references are provided
         if 'references' in data:
@@ -119,8 +179,9 @@ class Employee_by_id(Resource):
 
             return response
     
-    def patch(self,id):
+    def patch(self, id):
         employee = Employee.query.filter_by(id=id).first()
+
         for attr in request.get_json():
             setattr(employee, attr, request.get_json().get(attr))
 
@@ -130,33 +191,28 @@ class Employee_by_id(Resource):
         bank_details = BankDetail.query.filter_by(employee_id=id)
         for detail in bank_details:
             for attr in request.get_json():
-                setattr(detail, attr, request.get_json().get(attr)) 
-
-        db.session.add(detail) 
+                setattr(detail, attr, request.get_json().get(attr))
+            db.session.add(detail)
 
         dependants = Dependant.query.filter_by(employee_id=id)
         for dependant in dependants:
             for attr in request.get_json():
                 setattr(dependant, attr, request.get_json().get(attr))
-        
-        db.session.add(dependant)
+            db.session.add(dependant)
 
         references = Reference.query.filter_by(employee_id=id)
         for reference in references:
             for attr in request.get_json():
                 setattr(reference, attr, request.get_json().get(attr))
-        
-        db.session.add(reference)
+            db.session.add(reference)
 
         documents = Document.query.filter_by(employee_id=id)
         for document in documents:
             for attr in request.get_json():
                 setattr(document, attr, request.get_json().get(attr))
-        
-        db.session.add(document)
+            db.session.add(document)
 
         db.session.commit()
-
 
         response = make_response(
             employee_schema.dump(employee),

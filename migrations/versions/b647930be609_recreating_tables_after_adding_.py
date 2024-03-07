@@ -1,8 +1,8 @@
-"""deleted and recreated tables feat:added email to job_applicants
+"""Recreating tables after adding emergency contact model
 
-Revision ID: b27b2270ae96
+Revision ID: b647930be609
 Revises: 
-Create Date: 2024-02-22 16:55:50.081287
+Create Date: 2024-03-06 00:06:03.781372
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b27b2270ae96'
+revision = 'b647930be609'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -49,7 +49,6 @@ def upgrade():
     sa.Column('date_joined', sa.DateTime(), nullable=False),
     sa.Column('marital_status', sa.String(), nullable=False),
     sa.Column('nationality', sa.String(), nullable=False),
-    sa.Column('emergency_contact', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('phone')
@@ -117,6 +116,18 @@ def upgrade():
     sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('emergency_contacts',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('first_name', sa.String(), nullable=False),
+    sa.Column('last_name', sa.String(), nullable=False),
+    sa.Column('gender', sa.String(), nullable=False),
+    sa.Column('relationship', sa.String(), nullable=False),
+    sa.Column('phone', sa.String(), nullable=False),
+    sa.Column('employee_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['employee_id'], ['employees.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('phone')
+    )
     op.create_table('interviews',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('time', sa.DateTime(), nullable=False),
@@ -157,6 +168,7 @@ def downgrade():
     op.drop_table('project_employees')
     op.drop_table('on_leave_employees')
     op.drop_table('interviews')
+    op.drop_table('emergency_contacts')
     op.drop_table('documents')
     op.drop_table('dependants')
     op.drop_table('department_employees')

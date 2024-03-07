@@ -35,7 +35,6 @@ class Employee(db.Model):
     date_joined = db.Column(db.DateTime, nullable=False)
     marital_status = db.Column(db.String, nullable=False)
     nationality = db.Column(db.String, nullable=False)
-    emergency_contact = db.Column(db.String, nullable=False)
 
     employee_leave = db.relationship('OnLeave_employee', backref='employee', uselist=False)
     employee_department = db.relationship('Department_employee', backref='employee', uselist=False)
@@ -45,6 +44,9 @@ class Employee(db.Model):
     references = db.relationship('Reference', backref='employee')
     documents = db.relationship('Document', backref='employee')
     bankdetails = db.relationship('BankDetail', backref='employee')
+    emergency_contacts = db.relationship('EmergencyContact', backref='employee')
+
+
 
 
 class Dependant(db.Model):
@@ -57,6 +59,19 @@ class Dependant(db.Model):
     age = db.Column(db.Integer, nullable=False)
     relationship = db.Column(db.String, nullable=False)
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))
+
+
+class EmergencyContact(db.Model):
+    __tablename__ = 'emergency_contacts'
+
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String, nullable=False)
+    last_name = db.Column(db.String, nullable=False)
+    gender = db.Column(db.String, nullable=False)
+    relationship = db.Column(db.String, nullable=False)
+    phone = db.Column(db.String, unique = True,nullable=False)
+    employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))    
+
 
 
 class Reference(db.Model):
@@ -120,7 +135,7 @@ class Leave(db.Model):
     leave_to =db.Column(db.DateTime, nullable=False)
     leave_type =db.Column(db.String, nullable=False)
     leave_letter =db.Column(db.String, nullable=False)
-    employees_on_leave = db.relationship('OnLeave_employee', backref='leave')
+    employee_on_leave = db.relationship('OnLeave_employee', backref='leave', uselist=False)
 
 
 class OnLeave_employee(db.Model):

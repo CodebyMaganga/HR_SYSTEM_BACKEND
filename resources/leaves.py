@@ -11,7 +11,7 @@ class Leave_list(Resource):
     parser.add_argument('leave_to', required=True, help="leave_to is required")
     parser.add_argument('leave_type', required=True, help="leave_type is required")
     parser.add_argument('leave_letter', required=True, help="leave_letter is required")
-    parser.add_argument('employees_on_leave', required=True, help="employees_on_leave is required")
+    parser.add_argument('employee_on_leave', required=True, help="employee_on_leave is required")
 
     def get(self):
         leaves = Leave.query.all()
