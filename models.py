@@ -70,7 +70,7 @@ class EmergencyContact(db.Model):
     last_name = db.Column(db.String, nullable=False)
     gender = db.Column(db.String, nullable=False)
     relationship = db.Column(db.String, nullable=False)
-    phone = db.Column(db.String, unique = True,nullable=False)
+    phone = db.Column(db.String, nullable=False)
     employee_id = db.Column(db.Integer, db.ForeignKey('employees.id'))    
 
 
