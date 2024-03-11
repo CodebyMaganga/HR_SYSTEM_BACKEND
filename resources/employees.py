@@ -12,6 +12,8 @@ from schemas import EmployeeSchema, employee_schema, employees_schema
 
 
 class Employee_list(Resource):
+
+    @jwt_required()
     def get(self):
         employees = Employee.query.all()
 
@@ -38,7 +40,7 @@ class Employee_list(Resource):
     #     db.session.commit()
 
     #     return "Profile picture has been uploaded!", 200
-
+    @jwt_required()
     def post(self):
         data = request.get_json()
         # Create new employee
@@ -174,6 +176,8 @@ class Employee_list(Resource):
     
 
 class Employee_by_id(Resource):
+    
+    @jwt_required()
     def get(self, id):
         employee = Employee.query.filter_by(id=id).first()
         
@@ -194,7 +198,7 @@ class Employee_by_id(Resource):
             )
 
             return response
-    
+    @jwt_required()
     def patch(self, id):
         employee = Employee.query.filter_by(id=id).first()
 
@@ -236,7 +240,7 @@ class Employee_by_id(Resource):
         )
 
         return response
-    
+    @jwt_required()
     def delete(self,id):
         employee = Employee.query.filter_by(id = id).first()
         bankdetails = BankDetail.query.filter_by(employee_id = id)

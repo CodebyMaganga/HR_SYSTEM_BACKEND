@@ -21,6 +21,7 @@ class Project_list(Resource):
 
         return response
     
+    @jwt_required()
     def post(self):
         data = Project_list.parser.parse_args()
         new_project = Project(**data)
@@ -36,6 +37,8 @@ class Project_list(Resource):
         return response
     
 class Project_by_id(Resource):
+    
+    @jwt_required()
     def get(self, id):
         project = Project.query.filter_by(id=id).first()
         
@@ -56,7 +59,8 @@ class Project_by_id(Resource):
             )
 
             return response
-    
+        
+    @jwt_required()
     def patch(self,id):
         project = Project.query.filter_by(id=id).first()
         for attr in request.get_json():
@@ -73,6 +77,7 @@ class Project_by_id(Resource):
 
         return response
     
+    @jwt_required()
     def delete(self,id):
         project = Project.query.filter_by(id=id).first()
         db.session.delete(project)
