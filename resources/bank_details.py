@@ -13,7 +13,7 @@ class BankDetail_list(Resource):
     parser.add_argument('branch_code', required=True, help="branch_code is required")
     parser.add_argument('employee_id', required=True, help="employee_id is required")
 
-
+    @jwt_required()
     def get(self):
         bank_details = BankDetail.query.all()
 
@@ -24,6 +24,7 @@ class BankDetail_list(Resource):
 
         return response
     
+    @jwt_required()
     def post(self):
         data = BankDetail_list.parser.parse_args()
         new_bank_detail = BankDetail(**data)
@@ -39,6 +40,8 @@ class BankDetail_list(Resource):
         return response
     
 class BankDetail_by_id(Resource):
+    
+    @jwt_required()
     def get(self, id):
         bank_detail = BankDetail.query.filter_by(id=id).first()
         
@@ -60,6 +63,7 @@ class BankDetail_by_id(Resource):
 
             return response
     
+    @jwt_required()
     def patch(self,id):
         bank_detail = BankDetail.query.filter_by(id=id).first()
         for attr in request.get_json():
@@ -76,6 +80,7 @@ class BankDetail_by_id(Resource):
 
         return response
     
+    @jwt_required()
     def delete(self,id):
         bank_detail = BankDetail.query.filter_by(id=id).first()
         db.session.delete(bank_detail)

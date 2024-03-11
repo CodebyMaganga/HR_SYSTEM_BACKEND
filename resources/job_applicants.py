@@ -16,6 +16,7 @@ class JobApplicant_list(Resource):
     parser.add_argument('role_applied', required=True, help="role_applied is required")
     parser.add_argument('status', required=True, help="status is required")
 
+    @jwt_required()
     def get(self):
         job_applicants = JobApplicant.query.all()
 
@@ -26,6 +27,7 @@ class JobApplicant_list(Resource):
 
         return response
     
+    @jwt_required()
     def post(self):
         data = JobApplicant_list.parser.parse_args()
         new_job_applicant = JobApplicant(**data)
@@ -41,6 +43,8 @@ class JobApplicant_list(Resource):
         return response
     
 class JobApplicant_by_id(Resource):
+    
+    @jwt_required()
     def get(self, id):
         job_applicant = JobApplicant.query.filter_by(id=id).first()
         
@@ -62,6 +66,7 @@ class JobApplicant_by_id(Resource):
 
             return response
     
+    @jwt_required()
     def patch(self,id):
         job_applicant = JobApplicant.query.filter_by(id=id).first()
         for attr in request.get_json():
@@ -78,6 +83,7 @@ class JobApplicant_by_id(Resource):
 
         return response
     
+    @jwt_required()
     def delete(self,id):
         job_applicant = JobApplicant.query.filter_by(id=id).first()
         db.session.delete(job_applicant)

@@ -17,7 +17,7 @@ class Leave_list(Resource):
     parser.add_argument('leave_letter', required=True, help="leave_letter is required")
     parser.add_argument('employee_id', required=True, help="employee_id is required")
 
-
+    @jwt_required()
     def get(self):
         leaves = Leave.query.all()
 
@@ -28,6 +28,7 @@ class Leave_list(Resource):
 
         return response
     
+    @jwt_required()
     def post(self):
         try:
             args = self.parser.parse_args()
@@ -66,6 +67,8 @@ class Leave_list(Resource):
             )
             return response
 class Leave_by_id(Resource):
+    
+    @jwt_required()
     def get(self, id):
         leave = Leave.query.filter_by(id=id).first()
         
@@ -87,6 +90,7 @@ class Leave_by_id(Resource):
 
             return response
     
+    @jwt_required()
     def patch(self,id):
         leave = Leave.query.filter_by(id=id).first()
         for attr in request.get_json():
@@ -103,6 +107,7 @@ class Leave_by_id(Resource):
 
         return response
     
+    @jwt_required()
     def delete(self,id):
         leave = Leave.query.filter_by(id=id).first()
         db.session.delete(leave)
